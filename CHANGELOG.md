@@ -15,7 +15,7 @@ All notable changes to MeterX are documented here. The format follows [Keep a Ch
 - `SECURITY.md` with what MeterX trusts and how to report privately, issue forms for bugs and features, and `npm run check:docs`, which checks the docs' sections, links, spelling and headings as part of `npm test`
 
 ### Changed
-- README rewritten around install, privacy and data, how a test works and a FAQ; CONTRIBUTING covers loading the extension in Firefox and the pull request rules
+- README rewritten around install, privacy and data, how a test works and a FAQ, with dark-mode images and live store user, download and star counts; CONTRIBUTING covers loading the extension in Firefox and the pull request rules
 
 ## [2027.0.0] - 2026-10-27
 

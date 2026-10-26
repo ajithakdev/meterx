@@ -135,14 +135,18 @@ const shots = [
     ['settings-light.png', 'Your plan, your schedule, your server', 'Compare with the speeds you pay for, test on a timer, or use your own server.'],
     ['report.png', 'Reports you can hand to your provider', 'A PDF with averages, a trend and every result, plus CSV and JSON.'],
 ];
-for (const [i, [file, title, line]] of shots.entries()) {
+function shotPage(file, title, line, dark = false) {
     const data = readFileSync(out('png/ui', file)).toString('base64');
-    await render(page(1280, 800, '#f2f4f7', `<div class="c"><h1>${title}</h1><p>${line}</p></div><div class="s"><img src="data:image/png;base64,${data}"></div>`,
+    const [ground, ink, sub, edge] = dark ? [INK.dark, '#f4f5f6', '#a4a8ae', '#26292d'] : ['#f2f4f7', '#0a0a0a', '#5b6068', '#e1e4e8'];
+    return page(1280, 800, ground, `<div class="c"><h1>${title}</h1><p>${line}</p></div><div class="s"><img src="data:image/png;base64,${data}"></div>`,
         `.c{position:absolute;left:80px;top:0;bottom:0;width:440px;display:flex;flex-direction:column;justify-content:center}
-         h1{font-size:52px;font-weight:600;letter-spacing:-.035em;line-height:1.02;color:#0a0a0a}p{font-size:22px;line-height:1.4;color:#5b6068;margin-top:20px}
+         h1{font-size:52px;font-weight:600;letter-spacing:-.035em;line-height:1.02;color:${ink}}p{font-size:22px;line-height:1.4;color:${sub};margin-top:20px}
          .s{position:absolute;left:600px;right:60px;top:40px;bottom:40px;display:flex;align-items:center;justify-content:center}
-         .s img{max-width:100%;max-height:100%;border-radius:14px;box-shadow:0 0 0 1px #e1e4e8}`), 1280, 800, `png/store/screenshot-${i + 1}-1280x800.png`);
+         .s img{max-width:100%;max-height:100%;border-radius:14px;box-shadow:0 0 0 1px ${edge}}`);
 }
+for (const [i, [file, title, line]] of shots.entries()) await render(shotPage(file, title, line), 1280, 800, `png/store/screenshot-${i + 1}-1280x800.png`);
+// The README shows this one on GitHub's dark theme.
+await render(shotPage('popup-dark.png', shots[0][1], shots[0][2], true), 1280, 800, 'png/readme/screenshot-1-dark-1280x800.png');
 
 await browser.close();
 

@@ -1,12 +1,17 @@
 <div align="center">
 
-<img src="brand/png/lockup-on-light.png" width="360" alt="MeterX" />
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="brand/png/lockup-on-dark.png" />
+  <img src="brand/png/lockup-on-light.png" width="360" alt="MeterX" />
+</picture>
 
 **A free, open-source speed test in your browser toolbar that also tells you what the numbers mean.**
 
 [![CI](https://github.com/ajithakdev/meterx/actions/workflows/ci.yml/badge.svg)](https://github.com/ajithakdev/meterx/actions/workflows/ci.yml)
-[![Release](https://img.shields.io/github/v/release/ajithakdev/meterx)](https://github.com/ajithakdev/meterx/releases/latest)
-[![Firefox Add-ons](https://img.shields.io/amo/v/meterx-by-ajithakdev?label=Firefox)](https://addons.mozilla.org/firefox/addon/meterx-by-ajithakdev/)
+[![Firefox Add-ons](https://img.shields.io/amo/v/meterx-by-ajithakdev?label=Firefox&logo=firefoxbrowser&logoColor=white)](https://addons.mozilla.org/firefox/addon/meterx-by-ajithakdev/)
+[![Edge users](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fmicrosoftedge.microsoft.com%2Faddons%2Fgetproductdetailsbycrxid%2Fglkpolbkpachomgmmhdkmjnghejbhlfc&query=%24.activeInstallCount&label=Edge%20users&color=0078D7)](https://microsoftedge.microsoft.com/addons/detail/glkpolbkpachomgmmhdkmjnghejbhlfc)
+[![Downloads](https://img.shields.io/github/downloads/ajithakdev/meterx/total?label=downloads)](https://github.com/ajithakdev/meterx/releases)
+[![Stars](https://img.shields.io/github/stars/ajithakdev/meterx?style=flat)](https://github.com/ajithakdev/meterx/stargazers)
 [![License: AGPL-3.0](https://img.shields.io/badge/License-AGPL--3.0-blue.svg)](LICENSE)
 
 [Install](#install) · [Privacy](#privacy-and-data) · [How it works](#how-it-works) · [FAQ](#faq) · [Website](https://meterx.ajithakdev.com) · [Guide](RESOURCES-AND-GUIDE.md)
@@ -18,7 +23,10 @@ Most speed tests stop at a download number. MeterX also measures ping while your
 MeterX is free, with no account, no ads and no tracking. Your results never leave your browser unless you share them. It is a community project and is not affiliated with Cloudflare, Mozilla, Microsoft, Opera or Google.
 
 <p align="center">
-  <img src="brand/png/store/screenshot-1-1280x800.png" width="720" alt="MeterX popup with a sample result: 280 Mbps download, 91.1 Mbps upload, 18 ms ping, grade B latency under load, and Smooth for video calls and gaming" />
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="brand/png/readme/screenshot-1-dark-1280x800.png" />
+    <img src="brand/png/store/screenshot-1-1280x800.png" width="720" alt="MeterX popup with a sample result: 280 Mbps download, 91.1 Mbps upload, 18 ms ping, grade B latency under load, and Smooth for video calls and gaming" />
+  </picture>
 </p>
 
 ## Install
