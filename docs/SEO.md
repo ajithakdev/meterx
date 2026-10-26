@@ -6,7 +6,7 @@ How search and link previews work on `meterx.ajithakdev.com`, what to set up onc
 
 - Every page is plain static HTML in `apps/site/static/`, so crawlers get the full text, title and meta tags without running JavaScript.
 - Each page has its own `<title>`, `<meta name="description">`, `<link rel="canonical">`, Open Graph tags (`og:type`, `og:url`, `og:site_name`, title, description, image) and `twitter:card` in its `<head>`. The home page also carries `SoftwareApplication` and `WebSite` JSON-LD; the second one gives Google the site name.
-- `apps/site/static/sitemap.xml` lists the eight indexable pages (Home, How it works, Features, Questions, About, Contribute, Get MeterX, Privacy). Update it by hand when a page is added or removed.
+- `apps/site/static/sitemap.xml` lists the eight indexable pages (Home, How it works, Features, Questions, About, Contribute, Get MeterX, Privacy). Update it by hand when a page is added or removed, and bump each `lastmod` on a release that changes the page.
 - `apps/site/static/robots.txt` allows everything except `/r/` (shared results) and `/app/` (the extension's demo pages, shown inside frames). `/get/` is indexable; its `?go` form redirects to a store and its canonical points back at `/get/`.
 - The share viewer and 404 pages carry `noindex`.
 - `apps/site/static/img/og.png` (1200x630) is the preview image for shared links. `brand/build.mjs` makes it.
