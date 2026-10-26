@@ -41,9 +41,9 @@ export default defineConfig([
     },
     extends: ["js/recommended"]
   },
-  // Server TypeScript - node globals
+  // Server, worker and package TypeScript - node globals
   {
-    files: ["services/server/src/**/*.ts"],
+    files: ["services/server/src/**/*.ts", "services/worker/src/**/*.ts", "packages/*/src/**/*.ts"],
     plugins: { js, "@typescript-eslint": tseslint.plugin },
     languageOptions: {
       ecmaVersion: 2022,

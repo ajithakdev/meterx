@@ -4,6 +4,10 @@ All notable changes to MeterX are documented here. The format follows [Keep a Ch
 
 ## [Unreleased]
 
+### Changed
+- Worker uses far less CPU per request, to stay inside the Cloudflare free plan's 10 ms limit: downloads stream in 4 MiB chunks instead of 64 KB, and uploads with a declared length are read in one native call. Measured on preview versions on 2026-10-27: median CPU 16.1 ms to 5.6 ms, 90th percentile 20.4 ms to 7.2 ms
+- CI lints and type-checks the worker, `@meterx/shared` and `@meterx/reports` too (#86)
+
 ### Added
 - `npm run package` also fills `release/upload/<store>/` with each store's zip and the image sizes it needs (Opera's 800x500 screenshots, 64px icon and 300x188 tile included); `docs/STORE-CHECKLIST.md` now walks through Edge, Opera and Firefox step by step
 

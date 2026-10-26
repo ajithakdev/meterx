@@ -40,6 +40,12 @@ jobs:
       - name: Type check extension
         run: cd apps/extension && npx tsc --noEmit
 
+      - name: Type check worker and packages
+        run: |
+          (cd services/worker && npx tsc --noEmit)
+          (cd packages/shared && npx tsc --noEmit)
+          (cd packages/reports && npx tsc --noEmit)
+
       - name: Build
         run: npm run build
 
