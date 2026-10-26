@@ -1,90 +1,66 @@
 # Contributing to MeterX
 
-Here's how to get set up and contribute.
+Bug reports, test reports from other browsers and fixes are all welcome. Start with a [good first issue](https://github.com/ajithakdev/meterx/labels/good%20first%20issue), or ask in [Discussions](https://github.com/ajithakdev/meterx/discussions) before a large change.
 
-## Dev Setup
+## Setup
+
+You need Node 22 or newer and npm.
 
 ```bash
 git clone https://github.com/ajithakdev/meterx.git
 cd meterx
 npm install
-npm run build
+npm run dev:ext    # builds the extension, runs a local test server on http://localhost:8787
 ```
 
-## Load the Extension
+`npm run dev:site` builds and serves the website on http://localhost:8788 instead.
 
-1. Go to `chrome://extensions` (or `edge://extensions`)
-2. Enable "Developer mode"
-3. Click "Load unpacked"
-4. Select `apps/extension/dist/`
+## Load the extension
 
-Rebuild with `npm run build` after changes, then hit reload on the extensions page.
+- Chromium (Chrome, Edge, Opera, Brave): open `chrome://extensions`, turn on Developer mode, choose Load unpacked and pick `apps/extension/dist/`.
+- Firefox: run `npm run package`, then open `about:debugging`, choose This Firefox, Load Temporary Add-on, and pick `release/meterx-<version>-firefox.zip`. `dist/` has the Chromium manifest, so Firefox needs the packaged zip.
 
-## Run the Worker Locally
+To test against your local server, set Custom server to `http://localhost:8787` in MeterX settings. After a change, run `npm run build -w @meterx/extension` and reload the extension.
 
-```bash
-cd services/worker
-npx wrangler dev
-```
-
-This starts a local Cloudflare Worker on `http://localhost:8787`. Update the server URL in the extension settings to point here.
-
-## Run the Server Locally
-
-```bash
-npm start
-```
-
-Starts the Express.js self-host server. Useful for LAN testing or when you don't want to touch the worker.
-
-## Project Structure
+## Project layout
 
 ```text
-apps/extension     Browser extension (TypeScript, Manifest V3, esbuild)
+apps/extension     the extension (TypeScript, Manifest V3, esbuild)
 apps/site          meterx.ajithakdev.com
 services/worker    Cloudflare Worker, the default test server
-services/server    Express server, for self-hosting
-packages/shared    Types, API constants and rules every part shares
+services/server    Express server with the same API, for self-hosting
+packages/shared    types, API constants and rules every part shares
 packages/reports   PDF, CSV and JSON builders
 ```
 
-The full map is in [docs/CODEMAP.md](docs/CODEMAP.md).
+Every file is listed in [docs/CODEMAP.md](docs/CODEMAP.md). The worker and the server share one API; change both together.
 
 ## Commands
 
 | Command | What it does |
-|---------|-------------|
-| `npm install` | Install all workspace deps |
-| `npm run build` | Build all packages |
-| `npm start` | Run self-host server |
-| `npm test` | Run all tests |
-| `npm run lint` | ESLint check |
-| `npm run lint:fix` | Auto-fix lint issues |
-| `npm -w @meterx/server run test` | Run server tests only |
-| `cd services/worker && npx wrangler dev` | Run worker locally |
-| `cd services/worker && npx wrangler deploy` | Deploy worker to Cloudflare |
+| --- | --- |
+| `npm run build` | Build the extension, site and server |
+| `npm test` | Every workspace's tests, the scripts' tests and the docs check |
+| `npm run lint` | ESLint for TypeScript, CSS and Markdown |
+| `npm run check:docs` | Docs rules only: sections, links, spelling, headings |
+| `npm run package` | Store zips in `release/` |
+| `npm start` | Self-host server on port 3000 (after a build) |
 
-## Code Style
+## Code style
 
-- TypeScript everywhere, no plain JS
-- ESLint with strict rules, run `npm run lint` before committing
-- Prefix unused parameters with `_`
-- Keep functions short and focused
-- Throw errors, don't return sentinel values
-- No `any` unless absolutely necessary
+- TypeScript, strict. No `any` unless there is no other way.
+- Keep pages thin: they send `chrome.runtime` messages, and measurement stays in `apps/extension/src/background/`.
+- New logic gets a test next to it (`*.test.ts`).
+- Prefix unused parameters with `_`.
 
-## Pull Requests
+## Pull requests
 
-1. Fork the repo, branch from `main`
-2. Make your changes
-3. Run `npm run lint && npm run build && npm test`: all must pass
-4. Open a PR with a clear description of what changed and why
-5. One approval required to merge
+1. Branch from `main`.
+2. Run `npm run lint && npm run build && npm test`. All three must pass.
+3. Write commit messages with a conventional prefix (`feat:`, `fix:`, `docs:`, `chore:`, `refactor:`).
+4. Add a line under `## [Unreleased]` in [CHANGELOG.md](CHANGELOG.md) for anything a user would notice.
+5. Open the pull request with what changed and why, and how you tested it. Include a screenshot for UI changes.
 
-## Reporting Bugs
+## Reporting bugs
 
-Open an issue with:
-- Browser and version
-- Steps to reproduce
-- Expected vs actual behavior
-- Console errors if applicable
+Use the [bug report form](https://github.com/ajithakdev/meterx/issues/new?template=bug_report.yml). It asks for your browser, versions and any console errors. Security problems go through [SECURITY.md](SECURITY.md).

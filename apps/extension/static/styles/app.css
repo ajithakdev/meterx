@@ -58,8 +58,9 @@
   --ease: cubic-bezier(.2, .7, .2, 1);
 }
 
+/* Dark tokens appear twice: once for the system setting, once for the override in settings (src/lib/theme.ts). Keep them in sync. */
 @media (prefers-color-scheme: dark) {
-  :root {
+  :root:not([data-theme="light"]) {
     --ground: #0b0c0e;
     --surface: #151618;
     --raised: #1f2124;
@@ -86,6 +87,34 @@
     --axis-ink: #a4a8ae;
   }
 }
+:root[data-theme="dark"] {
+  --ground: #0b0c0e;
+  --surface: #151618;
+  --raised: #1f2124;
+  --border: #26292d;
+  --rule: #1f2124;
+  --control: #3a3e44;
+  --text: #f4f5f6;
+  --muted: #a4a8ae;
+  --data: #74a6ff;
+  --data-track: #1b2a44;
+  --primary: #f4f5f6;
+  --on-primary: #0b0c0e;
+  --positive: #4cc38a;
+  --negative: #f0717a;
+  --warning: #f0b45a;
+  --pill-positive-bg: #12291d; --pill-positive-ink: #6fdca5;
+  --pill-negative-bg: #2e1517; --pill-negative-ink: #ff9aa1;
+  --pill-warning-bg: #2d2210; --pill-warning-ink: #f4c27a;
+  --pill-neutral-bg: #1f2124; --pill-neutral-ink: #c9ccd1;
+  --focus: #74a6ff;
+  --chart-2: #8d9198;
+  --chart-muted: #8d9198;
+  --grid: #26292d;
+  --axis-ink: #a4a8ae;
+}
+:root[data-theme="light"] { color-scheme: light; }
+:root[data-theme="dark"] { color-scheme: dark; }
 
 *, *::before, *::after { box-sizing: border-box; }
 html { -webkit-text-size-adjust: 100%; }

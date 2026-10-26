@@ -50,7 +50,7 @@ Every link for MeterX, what it is for, and how to run, package and release it. P
 1. Install MeterX from your browser's store (https://meterx.ajithakdev.com/get/).
 2. Click the MeterX icon in the toolbar and press Run test. It takes about twenty seconds.
 3. Open the side panel (the panel icon in the popup) to see your history, trend and plan comparison.
-4. In settings (the sliders icon), enter your ISP plan, choose a test schedule, or point MeterX at your own server.
+4. In settings (the sliders icon), enter your ISP plan, choose a test schedule, pick Light, Dark or Match system under Appearance, or point MeterX at your own server.
 5. Export or Share from the popup or side panel to save a PDF, CSV or JSON, or send someone a link.
 
 ## Admin guide
@@ -67,7 +67,7 @@ Every link for MeterX, what it is for, and how to run, package and release it. P
 | Deploy the worker | `cd services/worker && npx wrangler deploy` |
 | Deploy the site | `npm run deploy -w @meterx/site`: builds the extension and site and uploads to Cloudflare Pages project `meterx-site`. Not connected to git, so merges (docs or code) never deploy |
 | First site deploy (once) | `npx wrangler pages project create meterx-site --production-branch main`, then `npm run deploy -w @meterx/site`, then in the Cloudflare dashboard: Workers and Pages, `meterx-site`, Custom domains, add `meterx.ajithakdev.com` (Cloudflare adds the CNAME itself). Then set the GitHub repo's website to the site |
-| Submit to the stores | `npm run package`, then upload `release/meterx-<version>-chromium.zip` to Edge and Opera, and `-firefox.zip` plus `-source.zip` to Firefox. Images are in `brand/png/store/`. All three stores are free; the Chrome Web Store needs a one-time paid developer fee, so it waits |
+| Submit to the stores | Follow `docs/STORE-CHECKLIST.md`. `npm run package`, then upload `release/meterx-<version>-chromium.zip` to Edge and Opera, and `-firefox.zip` plus `-source.zip` to Firefox. Images are in `brand/png/store/`. All three stores are free; the Chrome Web Store needs a one-time paid developer fee, so it waits |
 | Bump the version | Edit `version` in the root `package.json` only; the build stamps it everywhere |
 | Release | Move CHANGELOG Unreleased under the version, commit `chore: release vX.Y.Z`, tag, push the tag, `gh release create`, then deploy the worker, deploy the site and upload the store zips. Merging to `main` deploys nothing |
 | Regenerate brand images | `npm run build`, then `node brand/build.mjs` (see the header of that file for the env vars) |
@@ -84,6 +84,10 @@ Every link for MeterX, what it is for, and how to run, package and release it. P
 | Firefox upload rejected for a missing id | Upload the `-firefox.zip` from `npm run package`, not the Chromium zip |
 | Site build fails with "Build the extension first" | Run `npm run build` from the root, or build `@meterx/extension` before `@meterx/site` |
 | The demo pages on the site look out of date | Rebuild: the site copies the current extension build into `/app/` |
+| Popup or side panel colors don't match the browser's theme | Firefox gives extensions the system's light or dark setting. Pick Light or Dark under Appearance in MeterX settings |
+| Popup looks bigger in Firefox than in Chromium | Not a bug: each browser scales CSS pixels its own way (check `devicePixelRatio` in the popup's console). On GNOME, setting Chromium's "Preferred Ozone platform" flag to Wayland often fixes its scale |
+| Firefox won't load `apps/extension/dist/` | That folder has the Chromium manifest. Run `npm run package` and load `release/meterx-<version>-firefox.zip` on `about:debugging` |
+| Someone reports a security problem | Point them to SECURITY.md (private reporting is on under the repo's Security tab) |
 
 ## More detail
 
@@ -92,4 +96,5 @@ Every link for MeterX, what it is for, and how to run, package and release it. P
 - docs/SITE-PLAN.md: the site's pages, hosting and brand assets
 - docs/KNOWN-ISSUES.md: open bugs by area
 - docs/SEO.md: the site's SEO setup and release checklist
+- docs/STORE-CHECKLIST.md: what to check and test before every store upload
 - CHANGELOG.md, CONTRIBUTING.md, TRADEMARK.md, LICENSE

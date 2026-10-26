@@ -45,14 +45,14 @@ scripts/           package-stores.mjs for store uploads
 ```
 
 - **Extension** (`apps/extension`): esbuild bundles `src/background/index.ts` (service worker; measurement in `background/runner.ts` and `measure.ts`) and `src/pages/{popup,sidepanel,options}.ts`. Pages are thin: they send `chrome.runtime` messages (`startTest`, `cancelTest`, `getState`, `rescheduleTests`) and listen for `testProgress` / `testComplete` / `testError`. Browser-only helpers live in `src/lib/` (history, isp, export downloads, ui, tooltips, browser).
-- **Site** (`apps/site`): `build.mjs` copies `static/`, fills the `<!-- header -->` and `<!-- footer -->` partials, and copies the built extension pages into `dist/app/` with `src/demo-shim.ts` injected before their scripts. The shim stands in for the extension APIs with labelled sample data (`src/sample.ts`); the home page drives the popup's sample test from scroll through `postMessage`. The scroll engine is `static/sc/` (scroll-craft, unmodified).
+- **Site** (`apps/site`): `build.mjs` copies `static/`, fills the `<!-- header -->` and `<!-- footer -->` partials, and copies the built extension pages into `dist/app/` with `src/demo-shim.ts` injected before their scripts. The shim stands in for the extension APIs with labeled sample data (`src/sample.ts`); the home page drives the popup's sample test from scroll through `postMessage`. The scroll engine is `static/sc/` (scroll-craft, unmodified).
 - **Worker and server**: same API, kept in sync. CORS answers extension origins, the site origin and localhost dev ports (`isAllowedOrigin` in shared).
 
 **Server API contract**: `GET/HEAD /ping`, `GET /test-file/{1|5|10|25}MB.bin`, `POST /upload` (`application/octet-stream`, body discarded), `GET /health`, `GET /ip`. Sizes come from `ALLOWED_SIZES_MB` / `TEST_FILE_RE` in shared. Responses send `Timing-Allow-Origin` so the extension can read DNS timing.
 
 **Measurement**: 4 download and 3 upload streams for a fixed time, ramp-up and tail trimmed, loaded-latency pings for the bufferbloat grade. The rate limits in the worker and server are sized for this burst; raise them if you add streams.
 
-**Storage**: `chrome.storage.sync` holds settings (`serverUrl`, `ispPlan`, `scheduleMinutes`, `notifyOnDrop`); `chrome.storage.local` holds `history` (capped at 200). Scheduled tests use `chrome.alarms`.
+**Storage**: `chrome.storage.sync` holds settings (`serverUrl`, `ispPlan`, `scheduleMinutes`, `notifyOnDrop`, `theme`); `chrome.storage.local` holds `history` (capped at 200). Scheduled tests use `chrome.alarms`.
 
 Custom server URLs need a runtime host-permission grant (`optional_host_permissions`); the settings page requests it.
 

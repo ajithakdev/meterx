@@ -10,14 +10,15 @@ Remove a row when its fix is merged.
 |---|---|---|
 | #60 | High | Upload reads 0 Mbps below about 12.6 Mbps (bytes credited only per finished 5 MB request) |
 | #61 | High | Tests run with the popup closed are never saved |
-| #62 | Med | Failed and cancelled tests are saved as history |
+| #62 | Med | Failed and canceled tests are saved as history |
 | #63 | Med | Cancel doesn't stop in-flight transfers or the ping phase |
-| #64 | Med | Speeds use mebibits but are labelled Mbps (about 4.6% low) |
+| #64 | Med | Speeds use mebibits but are labeled Mbps (about 4.6% low) |
 | #65 | Med | Failed requests retry in a tight loop and show as 0 Mbps |
 | #66 | Med | Schedule alarm resets on every browser start |
 | #67 | Low | Notify-on-drop fires on every poor result; quality rules in three copies |
 | #69 | Low | DNS time can come from an earlier test |
 | #71 | Low | `edge` is never set on results |
+| #97 | Med | Results from private windows are saved to history (Firefox policy: must not store private-browsing data) |
 
 ## Extension UI
 

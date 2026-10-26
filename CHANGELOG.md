@@ -4,6 +4,19 @@ All notable changes to MeterX are documented here. The format follows [Keep a Ch
 
 ## [Unreleased]
 
+## [2027.0.1] - 2026-10-27
+
+### Fixed
+- Updated the PDF export's libraries (DOMPurify 3.4.17, fflate 0.8.3) and the self-host server's Express dependencies (body-parser 2.4.0 and others) to versions without known security advisories
+
+### Added
+- Appearance setting: Match system, Light or Dark. Firefox gives extension pages the system's light or dark setting rather than Firefox's own theme, so the popup and sidebar could disagree with the browser; now you can pick
+- `docs/STORE-CHECKLIST.md`: what to check before each store upload, built from the Firefox, Edge, Opera and Chrome store policies
+- `SECURITY.md` with what MeterX trusts and how to report privately, issue forms for bugs and features, and `npm run check:docs`, which checks the docs' sections, links, spelling and headings as part of `npm test`
+
+### Changed
+- README rewritten around install, privacy and data, how a test works and a FAQ, with dark-mode images and live store user, download and star counts; CONTRIBUTING covers loading the extension in Firefox and the pull request rules
+
 ## [2027.0.0] - 2026-10-27
 
 ### Added
@@ -173,7 +186,8 @@ First store release, store version 2026.3.19.1 ("Major Rewrite One").
 - Express.js server with test file generation
 - Simple popup UI
 
-[Unreleased]: https://github.com/ajithakdev/meterx/compare/v2027.0.0...HEAD
+[Unreleased]: https://github.com/ajithakdev/meterx/compare/v2027.0.1...HEAD
+[2027.0.1]: https://github.com/ajithakdev/meterx/compare/v2027.0.0...v2027.0.1
 [2027.0.0]: https://github.com/ajithakdev/meterx/compare/v2026.2.0...v2027.0.0
 [2026.2.0]: https://github.com/ajithakdev/meterx/compare/v2026.1.0...v2026.2.0
 [2026.1.0]: https://github.com/ajithakdev/meterx/compare/v2026.0.0...v2026.1.0

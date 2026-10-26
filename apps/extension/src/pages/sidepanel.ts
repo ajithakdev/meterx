@@ -13,9 +13,12 @@ import { NONE, fmt, fmtSpeed, fmtWhen } from '../lib/format';
 import { loadHistory } from '../lib/history';
 import { loadIspPlan, planShare } from '../lib/isp';
 import { qualityOf } from '../lib/quality';
+import { applyTheme } from '../lib/theme';
 import { bindTooltips } from '../lib/tooltips';
 import { MARK_SVG, animatePhase, bindMenu, scopeLine, setFigure } from '../lib/ui';
 import { median } from '../background/measure';
+
+void applyTheme();
 
 interface ChartsApi {
     line(el: HTMLElement, opts: Record<string, unknown>): { legend: HTMLElement | null };
@@ -238,6 +241,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     let resizing: number | undefined;
     window.addEventListener('resize', () => { clearTimeout(resizing); resizing = window.setTimeout(refresh, 150); });
     chrome.storage.onChanged.addListener((changes, area) => {
-        if ((area === 'local' && 'history' in changes) || (area === 'sync' && ('ispPlan' in changes || 'serverUrl' in changes))) refresh();
+        if ((area === 'local' && 'history' in changes) || (area === 'sync' && ('ispPlan' in changes || 'serverUrl' in changes || 'theme' in changes))) refresh();
     });
 });

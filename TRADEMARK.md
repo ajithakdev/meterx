@@ -1,4 +1,4 @@
-# MeterX Trademark Policy
+# MeterX trademark policy
 
 ## Ownership
 

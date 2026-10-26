@@ -7,6 +7,9 @@
 /// <reference types="chrome" />
 
 import { VERSION, WORKER_URL, type IspPlan } from '@meterx/shared';
+import { THEME_KEY, applyTheme, type Theme } from '../lib/theme';
+
+void applyTheme();
 
 const DEFAULT_URL = WORKER_URL;
 const ISP_KEY = 'ispPlan';
@@ -45,12 +48,13 @@ document.addEventListener('DOMContentLoaded', async () => {
     const ispClearBtn = document.getElementById('ispClearBtn') as HTMLButtonElement | null;
     const scheduleRadios = document.querySelectorAll<HTMLInputElement>('input[name="schedule"]');
     const notifyCheckbox = document.getElementById('notifyOnDrop') as HTMLInputElement | null;
+    const themeRadios = document.querySelectorAll<HTMLInputElement>('input[name="theme"]');
 
     // Close button
     closeBtn.addEventListener('click', () => window.close());
 
     // Load ISP plan + schedule prefs
-    const stored = await chrome.storage.sync.get([ISP_KEY, SCHEDULE_KEY, NOTIFY_KEY]);
+    const stored = await chrome.storage.sync.get([ISP_KEY, SCHEDULE_KEY, NOTIFY_KEY, THEME_KEY]);
     const plan = stored[ISP_KEY] as IspPlan | undefined;
     if (plan && ispDown && ispUp && ispProvider) {
         ispDown.value = String(plan.downloadMbps);
@@ -60,6 +64,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     const scheduleMinutes: number = stored[SCHEDULE_KEY] ?? 0;
     scheduleRadios.forEach(r => { r.checked = Number(r.value) === scheduleMinutes || (r.value === 'off' && scheduleMinutes === 0); });
     if (notifyCheckbox) notifyCheckbox.checked = !!stored[NOTIFY_KEY];
+    const theme: Theme = stored[THEME_KEY] ?? 'system';
+    themeRadios.forEach(r => { r.checked = r.value === theme; });
 
     if (ispClearBtn) {
         ispClearBtn.addEventListener('click', async () => {
@@ -252,6 +258,11 @@ document.addEventListener('DOMContentLoaded', async () => {
         const minutes = selectedSchedule && selectedSchedule.value !== 'off' ? Number(selectedSchedule.value) : 0;
         await chrome.storage.sync.set({ [SCHEDULE_KEY]: minutes, [NOTIFY_KEY]: !!notifyCheckbox?.checked });
         chrome.runtime.sendMessage({ action: 'rescheduleTests' });
+
+        // Open MeterX pages pick the change up through storage.onChanged
+        const pickedTheme = Array.from(themeRadios).find(r => r.checked)?.value ?? 'system';
+        if (pickedTheme === 'system') await chrome.storage.sync.remove(THEME_KEY);
+        else await chrome.storage.sync.set({ [THEME_KEY]: pickedTheme });
 
         // Re-check status with new URL
         checkStatus();

@@ -55,7 +55,7 @@ The idea: **the visitor's own speed becomes the word in the sentence.** A speed 
 | How it works | A full test takes about 20 seconds and here is where the time goes | The extension's progress bar enlarged across the page, segments sized by the real phase lengths: connect under a second, latency 2 seconds, download about 9, upload about 9. This is the pinned story: the bar holds while each phase's explanation scrolls past |
 | Where it runs | It is in the stores you already use | One sentence of browser names, one lit at a time: "Install MeterX in Firefox, Microsoft Edge, Opera, and soon Chrome." Only browsers with a live listing are named as available |
 | Questions | Six honest answers | Is it free? What leaves my browser? Why does it differ from other speed tests? What is bufferbloat? Can I run my own server? When is it coming to Chrome? |
-| Close | Install it now | The page's colours inverted: "Test from your toolbar." with the install button for the detected browser |
+| Close | Install it now | The page's colors inverted: "Test from your toolbar." with the install button for the detected browser |
 | Footer | It is open source and made by one person | The GitHub repo address as the large line, links to About, Privacy, Changelog and ajithakdev.com, AGPL notice |
 
 The live test needs care on the worker side: the site's quick test must stay well inside the worker's rate limits and the free plan's request budget (100,000 requests a day). One quick test is about 10 requests, against about 150 for a full extension test. The site origin must be added to the worker's CORS list.

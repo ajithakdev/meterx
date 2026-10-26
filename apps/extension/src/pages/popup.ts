@@ -14,8 +14,11 @@ import { exportPdfReport } from '../lib/export-pdf';
 import { NONE, fmt, fmtSpeed, getTimeAgo } from '../lib/format';
 import { loadHistory } from '../lib/history';
 import { loadIspPlan } from '../lib/isp';
+import { applyTheme } from '../lib/theme';
 import { bindTooltips } from '../lib/tooltips';
 import { MARK_SVG, animatePhase, bindMenu, findingFor, renderLoad, renderReady, scopeLine, setFigure, setQualityPill } from '../lib/ui';
+
+void applyTheme();
 
 const $ = <T extends HTMLElement = HTMLElement>(id: string) => document.getElementById(id) as T;
 
