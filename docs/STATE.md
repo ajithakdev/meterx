@@ -4,25 +4,15 @@ Last updated: 2026-10-24, on `release/v2027.0.0`, PR open for review (see below)
 
 Update this file at the end of each work session. Keep it short. Delete entries once they are done and merged.
 
-## In progress (2026-10-24)
+## In progress (2026-10-27)
 
-Major release 2027.0.0 on branch `release/v2027.0.0`, releasing Tuesday 2026-10-27 (slipped from Sunday). The owner has tested the site and the extension locally and signed both off. The PR merges only on the owner's word.
+2027.0.0 is released: merged as #96, tagged `v2027.0.0` with a GitHub release (store zips attached), worker deployed (`/health` reports 2027.0.0), site live at https://meterx.ajithakdev.com (Pages project `meterx-site`, custom domain and CNAME set up on 2026-10-27). Main has a `protect-main` ruleset, so merges need the owner's admin bypass.
 
-Done on the branch:
-- Repo renamed to `ajithakdev/meterx` and split into `apps/`, `services/` and `packages/`. `npm run package` makes the store zips; `npm run dev:ext` and `npm run dev:site` run local tests.
-- Extension: redesign, live test view, exports (vector PDF with report ID, CSV, JSON), one version source, new X-on-a-dial logo (other options kept in `brand/alternates/`).
-- Site (`apps/site`): Home, How it works, Features, Questions, Contribute, About, Privacy, Get MeterX, share viewer, 404. SEO tags, sitemap and robots are ready (`docs/SEO.md`).
-- Cleanup: unused code, IDE files and a dev dependency removed; `privacy-policy.md` now points to the site.
-
-Next, in order (Sunday):
-1. Owner says merge; squash-merge the PR (main has a `protect-main` ruleset, so it needs the admin bypass).
-2. Release: CHANGELOG section is already on the PR; tag `v2027.0.0` on the squash commit, `gh release create`.
-3. `cd services/worker && npx wrangler deploy` (the site's quick test and settings check need the new worker).
-4. Site: Pages project `meterx-site` and the `meterx.ajithakdev.com` domain and CNAME exist (2026-10-27); run `npm run deploy -w @meterx/site`.
-5. Store uploads from `release/` with images from `brand/png/store/`: Firefox, Edge, Opera (all free). Set each listing's website and privacy URL to the site. Chrome Web Store needs a paid developer fee, so it waits for the owner's call.
-6. SEO one-time setup in `docs/SEO.md` (Search Console sitemap, Bing), GitHub repo website field, portfolio entry.
-7. Opera listing link into `apps/site/src/stores.ts` once it is public.
-8. Verify and close the scan's issues (#60, #64 to #70, #73, #76 to #79, #81, #82, #85); check #61 to #63, #80, #87.
+Next:
+1. Store uploads from `release/` with images from `brand/png/store/`: Firefox, Edge, Opera (all free). Set each listing's website and privacy URL to the site. Chrome Web Store needs a paid developer fee, so it waits for the owner's call.
+2. SEO one-time setup in `docs/SEO.md` (Search Console sitemap, Bing), portfolio entry.
+3. Opera listing link into `apps/site/src/stores.ts` once it is public.
+4. Verify and close the scan's issues (#60, #64 to #70, #73, #76 to #79, #81, #82, #85); check #61 to #63, #80, #87.
 
 ## Releases
 

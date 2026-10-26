@@ -20,7 +20,7 @@ Do these once. Tick them off here when done.
 - [ ] Bing Webmaster Tools: add `https://meterx.ajithakdev.com` (or import from Search Console) and submit the same sitemap.
 - [ ] In Search Console, URL Inspection on `https://meterx.ajithakdev.com/`, then "Request indexing".
 - [ ] Link the site from each store listing's website field (Firefox, Edge, Opera), and set each listing's privacy policy URL to `https://meterx.ajithakdev.com/privacy/`.
-- [ ] Add the GitHub repo's website field: `https://meterx.ajithakdev.com`.
+- [x] Add the GitHub repo's website field: `https://meterx.ajithakdev.com`.
 
 ## Release checklist
 
