@@ -97,4 +97,5 @@ Every link for MeterX, what it is for, and how to run, package and release it. P
 - docs/KNOWN-ISSUES.md: open bugs by area
 - docs/SEO.md: the site's SEO setup and release checklist
 - docs/STORE-CHECKLIST.md: what to check and test before every store upload
+- docs/STORE-LISTINGS.md: the text for every store field, ready to paste
 - CHANGELOG.md, CONTRIBUTING.md, TRADEMARK.md, LICENSE
