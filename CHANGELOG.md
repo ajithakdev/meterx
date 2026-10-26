@@ -4,6 +4,8 @@ All notable changes to MeterX are documented here. The format follows [Keep a Ch
 
 ## [Unreleased]
 
+## [2027.0.0] - 2026-10-26
+
 ### Added
 - The PDF report has a faint MeterX watermark, and every page shows a Report ID: a fingerprint of the results, so an edited copy no longer matches a fresh export of the same tests
 - Running a test from the side panel shows it live: the summary card switches to the current download, upload, ping and elapsed time, the heading names the phase, and a progress line runs under the header
@@ -171,7 +173,8 @@ First store release, store version 2026.3.19.1 ("Major Rewrite One").
 - Express.js server with test file generation
 - Simple popup UI
 
-[Unreleased]: https://github.com/ajithakdev/meterx/compare/v2026.2.0...HEAD
+[Unreleased]: https://github.com/ajithakdev/meterx/compare/v2027.0.0...HEAD
+[2027.0.0]: https://github.com/ajithakdev/meterx/compare/v2026.2.0...v2027.0.0
 [2026.2.0]: https://github.com/ajithakdev/meterx/compare/v2026.1.0...v2026.2.0
 [2026.1.0]: https://github.com/ajithakdev/meterx/compare/v2026.0.0...v2026.1.0
 [2026.0.0]: https://github.com/ajithakdev/meterx/compare/v0.2.0...v2026.0.0

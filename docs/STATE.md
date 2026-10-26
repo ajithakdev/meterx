@@ -6,7 +6,7 @@ Update this file at the end of each work session. Keep it short. Delete entries 
 
 ## In progress (2026-10-24)
 
-Major release 2027.0.0 on branch `release/v2027.0.0`, for Sunday 2026-10-25. The owner has tested the site and the extension locally and signed both off. The PR merges only on the owner's word.
+Major release 2027.0.0 on branch `release/v2027.0.0`, releasing Monday 2026-10-26 (slipped a day). The owner has tested the site and the extension locally and signed both off. The PR merges only on the owner's word.
 
 Done on the branch:
 - Repo renamed to `ajithakdev/meterx` and split into `apps/`, `services/` and `packages/`. `npm run package` makes the store zips; `npm run dev:ext` and `npm run dev:site` run local tests.
@@ -16,7 +16,7 @@ Done on the branch:
 
 Next, in order (Sunday):
 1. Owner says merge; squash-merge the PR.
-2. Release: CHANGELOG Unreleased to `## [2027.0.0] - 2026-10-25`, commit `chore: release v2027.0.0`, tag, `gh release create`.
+2. Release: CHANGELOG section is already on the PR; tag `v2027.0.0` on the squash commit, `gh release create`.
 3. `cd services/worker && npx wrangler deploy` (the site's quick test and settings check need the new worker).
 4. Site, first time: create the Pages project, deploy, add the custom domain (steps in RESOURCES-AND-GUIDE.md, "First site deploy").
 5. Store uploads from `release/` with images from `brand/png/store/`: Firefox, Edge, Opera (all free). Set each listing's website and privacy URL to the site. Chrome Web Store needs a paid developer fee, so it waits for the owner's call.
