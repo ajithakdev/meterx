@@ -9,7 +9,7 @@ Update this file at the end of each work session. Keep it short. Delete entries 
 2027.0.1 is released: merged as #98, tagged `v2027.0.1` with a GitHub release (store zips attached), site redeployed. The worker is unchanged since 2027.0.0. Main has a `protect-main` ruleset, so merges need the owner's admin bypass. Store uploads follow `docs/STORE-CHECKLIST.md`.
 
 Next:
-1. Store uploads of 2027.0.1 (owner, 2026-10-27): Edge and Opera with `-chromium.zip`, then Firefox with `-firefox.zip` and `-source.zip`. Chrome Web Store needs a paid developer fee, so it waits for the owner's call.
+1. Store reviews: Edge, Opera and Firefox 2027.0.1 submitted 2026-10-27. Delete the old never-published Opera entry (slug `meterx-by-ajithakdev`) if it still exists. Chrome Web Store needs a paid developer fee, so it waits for the owner's call.
 2. Opera listing link into `apps/site/src/stores.ts` and the README once it is public.
 3. SEO one-time setup in `docs/SEO.md` (Search Console sitemap, Bing), portfolio entry.
 4. #97: skip history for private-window tests (next patch).

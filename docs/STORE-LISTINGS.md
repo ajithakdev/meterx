@@ -99,7 +99,7 @@ Notes for certification: the reviewer notes in [STORE-CHECKLIST.md](STORE-CHECKL
 
 ## Opera Add-ons
 
-Dashboard: https://addons.opera.com/developer/ (MeterX is package 303783, ID `oajjobbjfpknebicnnneloildijibgdk`).
+Dashboard: https://addons.opera.com/developer/. MeterX is slug `meterx-by-ajithakdev-2`, ID `nmahjcepencimnpdgkaflobfcpdmkmnf`, submitted 2026-10-27. An older entry (slug `meterx-by-ajithakdev`, ID `oajjobbjfpknebicnnneloildijibgdk`) sat unreviewed from March 2026; delete it if it is still there, since Opera rejects duplicates.
 
 Update the existing entry, never a new one: Opera rejects duplicates, and the ID stays the same. Versions tab, "Copy metadata from version" set to the newest one, then upload `release/meterx-<version>-chromium.zip`, open the new version, edit its listing and submit it for moderation.
 
@@ -119,11 +119,25 @@ ffmpeg -y -i promo-440x280.png -vf "scale=300:191:flags=lanczos,crop=300:188" -p
 | Description | The description above |
 | Screenshots | `opera/screenshot-1` to `-5` (800x500) |
 | Promotional image tab | `opera/promo-300x188.png` |
-| Icon (64x64 required) | `opera/icon-64.png`, scaled from `icons/icon-128.png` with `ffmpeg -i ../icons/icon-128.png -vf scale=64:64:flags=lanczos -pix_fmt rgba opera/icon-64.png` |
+| Icon (64x64 required, Media tab) | `opera/icon-64.png`, scaled from `icons/icon-128.png` with `ffmpeg -i ../icons/icon-128.png -vf scale=64:64:flags=lanczos -pix_fmt rgba opera/icon-64.png` |
 | License | AGPL-3.0 if listed; otherwise point the license URL at `https://github.com/ajithakdev/meterx/blob/main/LICENSE` |
 | Homepage and support | Website and support from the shared fields |
 
 Keep "Opera" out of the name, text and images.
+
+Opera's description field returned a 500 error on the first save on 2026-10-27; saving again or using a shorter text without links got past it.
+
+General tab of each version:
+
+| Field | Value |
+| --- | --- |
+| Service website URL | `https://meterx.ajithakdev.com` |
+| Extension support page URL | `https://github.com/ajithakdev/meterx/issues` |
+| Source code URL (public) | `https://github.com/ajithakdev/meterx/tree/v<version>` |
+| Source code URL (for moderators) | `https://github.com/ajithakdev/meterx/releases/download/v<version>/meterx-<version>-source.zip` |
+| Build instructions | Linux, Node 24 and npm 11; `npm ci` then `npm run package`; the output is `release/meterx-<version>-chromium.zip`, bundled with esbuild and not minified |
+| License URL | `https://github.com/ajithakdev/meterx/blob/v<version>/LICENSE` |
+| Privacy policy URL | `https://meterx.ajithakdev.com/privacy/` |
 
 Message for the Conversation tab when a version replaces one still in the queue:
 
@@ -137,8 +151,20 @@ Dashboard: https://addons.mozilla.org/developers/addon/meterx-by-ajithakdev/vers
 
 Package: `release/meterx-<version>-firefox.zip`. When asked whether the code is minified or bundled, answer yes and upload `release/meterx-<version>-source.zip`. Summary, description and release notes from above.
 
-Notes to reviewer: the reviewer notes in [STORE-CHECKLIST.md](STORE-CHECKLIST.md#8-notes-for-reviewers-paste-into-every-store), plus:
+Compatibility: Firefox only. Leave Firefox for Android unticked until it is tested; Android has no sidebar.
+
+"Do you need to submit source code?": Yes (esbuild combines files), then upload the source zip.
+
+Notes to reviewer (used for 2027.0.1):
 
 ```text
-Build: Node 24 and npm 11 on Linux. Run `npm ci && npm run package`; the output is release/meterx-<version>-firefox.zip. All dependencies install from npm through package-lock.json.
+No account needed. Click the toolbar icon and press Run test; it takes about 20 seconds. Tests run against our own server (meterx-speedtest.meterx-ajithakdev.workers.dev), which streams test data and stores nothing. The sidebar, opened from the popup, shows history and exports.
+
+Build: Linux, Node 24, npm 11. From the root of the source zip, run "npm ci && npm run package". It writes release/meterx-<version>-firefox.zip, identical to this upload. All dependencies come from npm via package-lock.json. The code is bundled with esbuild, not minified.
+
+innerHTML: our own uses (src/lib/ui.ts and src/pages/sidepanel.ts) only insert fixed labels and numbers we format. The logo is a constant SVG. User text such as the ISP name goes through textContent. The other flagged uses are inside jsPDF, unmodified.
+
+No data is collected (data_collection_permissions: none). Source: https://github.com/ajithakdev/meterx, tag v<version>.
 ```
+
+After submitting, Manage Listing holds the summary, description, homepage, support site, screenshots and privacy policy.
