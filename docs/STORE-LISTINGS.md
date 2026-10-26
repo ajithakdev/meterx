@@ -119,6 +119,7 @@ ffmpeg -y -i promo-440x280.png -vf "scale=300:191:flags=lanczos,crop=300:188" -p
 | Description | The description above |
 | Screenshots | `opera/screenshot-1` to `-5` (800x500) |
 | Promotional image tab | `opera/promo-300x188.png` |
+| Icon (64x64 required) | `opera/icon-64.png`, scaled from `icons/icon-128.png` with `ffmpeg -i ../icons/icon-128.png -vf scale=64:64:flags=lanczos -pix_fmt rgba opera/icon-64.png` |
 | License | AGPL-3.0 if listed; otherwise point the license URL at `https://github.com/ajithakdev/meterx/blob/main/LICENSE` |
 | Homepage and support | Website and support from the shared fields |
 
