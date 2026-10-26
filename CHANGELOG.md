@@ -10,6 +10,7 @@ All notable changes to MeterX are documented here. The format follows [Keep a Ch
 - Updated the PDF export's libraries (DOMPurify 3.4.17, fflate 0.8.3) and the self-host server's Express dependencies (body-parser 2.4.0 and others) to versions without known security advisories
 
 ### Added
+- Appearance setting: Match system, Light or Dark. Firefox gives extension pages the system's light or dark setting rather than Firefox's own theme, so the popup and sidebar could disagree with the browser; now you can pick
 - `docs/STORE-CHECKLIST.md`: what to check before each store upload, built from the Firefox, Edge, Opera and Chrome store policies
 
 ## [2027.0.0] - 2026-10-27

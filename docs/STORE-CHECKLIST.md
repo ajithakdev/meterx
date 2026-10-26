@@ -41,7 +41,7 @@ In each browser:
 - [ ] Custom server `http://localhost:8787` (with `npm run dev:ext` running) asks for permission, then a test runs against it.
 - [ ] A scheduled test runs, and a drop in quality shows a notification. Turning notifications off in the OS does not break anything (Edge policy 1.9).
 - [ ] The extension console (Firefox: Inspect on `about:debugging`; Chromium: "service worker" link) shows no red errors.
-- [ ] Light and dark theme both look right, and the popup has no horizontal scroll (Opera checks this).
+- [ ] Appearance: Light, Dark and Match system each apply to the popup, side panel and settings without reopening them, and the popup has no horizontal scroll (Opera checks this).
 
 ## 3. Rules every store shares
 

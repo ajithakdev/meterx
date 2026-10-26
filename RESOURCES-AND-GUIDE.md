@@ -50,7 +50,7 @@ Every link for MeterX, what it is for, and how to run, package and release it. P
 1. Install MeterX from your browser's store (https://meterx.ajithakdev.com/get/).
 2. Click the MeterX icon in the toolbar and press Run test. It takes about twenty seconds.
 3. Open the side panel (the panel icon in the popup) to see your history, trend and plan comparison.
-4. In settings (the sliders icon), enter your ISP plan, choose a test schedule, or point MeterX at your own server.
+4. In settings (the sliders icon), enter your ISP plan, choose a test schedule, pick Light, Dark or Match system under Appearance, or point MeterX at your own server.
 5. Export or Share from the popup or side panel to save a PDF, CSV or JSON, or send someone a link.
 
 ## Admin guide

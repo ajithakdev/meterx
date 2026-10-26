@@ -52,7 +52,7 @@ scripts/           package-stores.mjs for store uploads
 
 **Measurement**: 4 download and 3 upload streams for a fixed time, ramp-up and tail trimmed, loaded-latency pings for the bufferbloat grade. The rate limits in the worker and server are sized for this burst; raise them if you add streams.
 
-**Storage**: `chrome.storage.sync` holds settings (`serverUrl`, `ispPlan`, `scheduleMinutes`, `notifyOnDrop`); `chrome.storage.local` holds `history` (capped at 200). Scheduled tests use `chrome.alarms`.
+**Storage**: `chrome.storage.sync` holds settings (`serverUrl`, `ispPlan`, `scheduleMinutes`, `notifyOnDrop`, `theme`); `chrome.storage.local` holds `history` (capped at 200). Scheduled tests use `chrome.alarms`.
 
 Custom server URLs need a runtime host-permission grant (`optional_host_permissions`); the settings page requests it.
 
