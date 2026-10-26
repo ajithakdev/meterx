@@ -1,117 +1,86 @@
-# MeterX
+<p align="center">
+  <img src="brand/png/lockup-on-light.png" alt="MeterX" width="420">
+</p>
 
-Every link and how-to is in [RESOURCES-AND-GUIDE.md](RESOURCES-AND-GUIDE.md).
+<p align="center">
+  <b>Your internet, honestly measured.</b><br>
+  A free, open-source speed test that lives in your browser toolbar.
+</p>
 
-[![License: AGPL-3.0](https://img.shields.io/badge/License-AGPL--3.0-blue.svg)](https://www.gnu.org/licenses/agpl-3.0)
-[![CI](https://github.com/ajithakdev/meterx-server/actions/workflows/ci.yml/badge.svg?branch=add/dev/2026.0.MAR.1)](https://github.com/ajithakdev/meterx-server/actions)
+<p align="center">
+  <a href="https://meterx.ajithakdev.com">Website</a> ·
+  <a href="https://meterx.ajithakdev.com/get/">Install</a> ·
+  <a href="RESOURCES-AND-GUIDE.md">Links and how-tos</a> ·
+  <a href="CONTRIBUTING.md">Contribute</a>
+</p>
 
-Open-source speed test browser extension. Measures download, upload, ping, jitter, and packet loss from your toolbar — powered by Cloudflare's edge network.
+---
 
-## Features
+Speed tests give you a number. MeterX tells you what it means.
 
-- **Full speed test** — download, upload, ping, jitter, packet loss
-- **Use-case readiness** — labels for Calls, Streaming, Gaming, Uploads
-- **Connection quality badge** — live rating on the extension icon
-- **PDF health report** — export a full network report as PDF
-- **Test history** — last 7 displayed, 200 stored locally
-- **Cloudflare edge** — serverless backend at 300+ PoPs worldwide
-- **Self-hostable server** — Express.js fallback for LAN or self-hosting
-- **Settings page** — configure custom server URL
-- **Animated UI** — progress steps, speed bars, smooth transitions
-- **No tracking, no accounts** — everything stays in your browser
+Click the icon, wait about twenty seconds, and you get download, upload, ping, jitter, packet loss and the one most tests skip: **latency under load**. That is why your video call stutters while someone else downloads a game, and MeterX grades it from A to F.
 
-## Install from Source
+No account. No tracking. Your results never leave your browser unless you share them.
+
+## Install
+
+| Browser | Where |
+| --- | --- |
+| Firefox | [Firefox Add-ons](https://addons.mozilla.org/firefox/addon/meterx-by-ajithakdev/) |
+| Microsoft Edge | [Edge Add-ons](https://microsoftedge.microsoft.com/addons/detail/glkpolbkpachomgmmhdkmjnghejbhlfc) |
+| Opera | Listing link coming soon |
+| Chrome, Brave, Vivaldi | Planned |
+
+Not sure which? [meterx.ajithakdev.com/get](https://meterx.ajithakdev.com/get/) picks the right store for you.
+
+## What you get
+
+- **A real test, fast.** Four download and three upload streams for a fixed time, with the slow start trimmed off.
+- **Bufferbloat, graded.** Ping measured while the line is busy, A to F.
+- **A plain answer.** Calls, 4K streaming, gaming, big uploads: MeterX says in words what your connection can handle.
+- **Memory.** Up to 200 results in the side panel, a trend chart, and how much of your ISP plan actually arrives.
+- **Tests on a timer.** Every 30 minutes, 2 hours or daily, with a notice when quality drops.
+- **Proof you can hand over.** A PDF report with a report ID that changes if the results are edited, or CSV and JSON with units in every column.
+- **Share links with no server.** The whole result rides inside the link.
+- **Your own server, if you like.** Tests run against Cloudflare's edge by default, or against one you host.
+
+## Under the hood
+
+```text
+apps/extension     the extension: popup, side panel, settings, service worker
+apps/site          meterx.ajithakdev.com, running the real extension pages on sample data
+services/worker    Cloudflare Worker test server (streams bytes, stores nothing)
+services/server    Express server with the same API, for self-hosting
+packages/shared    the contract: types, API, version, quality rules, share links
+packages/reports   PDF, CSV and JSON builders
+brand/             logo and the script that makes every icon and store image
+scripts/           store packaging, local dev runner, code map
+```
+
+The deep dive is in [CLAUDE.md](CLAUDE.md) and [docs/CODEMAP.md](docs/CODEMAP.md).
+
+## Hack on it
 
 ```bash
-git clone https://github.com/ajithakdev/meterx-server.git
-cd meterx-server
+git clone https://github.com/ajithakdev/meterx.git
+cd meterx
 npm install
-npm run build
+npm run dev:ext    # build the extension, run a local test server on :8787
+npm run dev:site   # build and serve the site on :8788
+npm test && npm run lint
+npm run package    # store uploads in release/
 ```
 
-**Load the extension:**
-1. Go to `chrome://extensions` (or `edge://extensions`)
-2. Enable "Developer mode"
-3. Click "Load unpacked" and select `packages/extension/dist/`
+To load it, open `chrome://extensions`, turn on Developer mode, choose Load unpacked and pick `apps/extension/dist/`. In MeterX settings, set Custom server to `http://localhost:8787` to test against your local worker. After a change, run `npm run build -w @meterx/extension` and reload.
 
-**Run the server locally (optional):**
-```bash
-npm start
-```
-
-## Architecture
-
-```text
-meterx-server/
-  packages/
-    extension/        # Browser extension (TypeScript, Manifest V3, esbuild)
-      src/
-        background.ts     # Service worker — test orchestration
-        popup.ts          # Popup UI, history, PDF export
-      static/             # HTML, CSS, manifest, icons
-      build.mjs           # esbuild bundler
-
-    worker/           # Cloudflare Worker — primary backend (serverless)
-      src/index.ts        # Edge handler — download, upload, ping, health
-      wrangler.toml       # Wrangler config
-
-    server/           # Express.js server — self-host fallback
-      src/
-        app.ts            # Express app (routes, middleware)
-        server.ts         # Entry point
-        app.test.ts       # Vitest + supertest (8 tests)
-```
-
-```text
-Browser Extension  -->  Cloudflare Worker (default, 300+ PoPs)
-                   -->  Express Server    (self-host / LAN fallback)
-```
-
-## Server Endpoints
-
-Both the worker and self-host server expose the same API:
-
-| Endpoint | Method | Purpose |
-|----------|--------|---------|
-| `/ping` | GET/HEAD | Latency measurement |
-| `/test-file/:size` | GET | Download test (1, 5, 10, 25 MB) |
-| `/upload` | POST | Upload drain |
-| `/health` | GET | Health check (includes edge location on worker) |
-
-All endpoints are rate-limited. CORS restricted to browser extensions and configured origins.
-
-## Development
-
-```bash
-npm install                              # Install all workspace deps
-npm run build                            # Build all packages
-npm start                                # Run self-host server
-npm test                                 # Run all tests
-cd packages/worker && npx wrangler dev   # Run worker locally
-npm run lint                             # ESLint
-```
-
-See [CONTRIBUTING.md](CONTRIBUTING.md) for the full guide.
-
-## Tech Stack
-
-- **Extension:** TypeScript, Manifest V3, esbuild
-- **Worker:** Cloudflare Workers, TypeScript, Wrangler
-- **Server:** TypeScript, Express.js 5, esbuild
-- **Testing:** Vitest, supertest
-- **CI:** GitHub Actions
+To self-host the test server, run `npm start` (port 3000) or deploy `services/worker` to your own Cloudflare account.
 
 ## Privacy
 
-MeterX collects zero personal data. All results are stored locally in your browser. Network requests go only to the configured test server. See [privacy-policy.md](privacy-policy.md).
+MeterX collects no personal data. Results stay in your browser and the default test server keeps no logs. Full policy: [meterx.ajithakdev.com/privacy](https://meterx.ajithakdev.com/privacy/).
 
 ## License
 
-[AGPL-3.0](LICENSE) — see [TRADEMARK.md](TRADEMARK.md) for brand usage policy.
+[AGPL-3.0](LICENSE). The name and logo have their own rules in [TRADEMARK.md](TRADEMARK.md).
 
-## Author
-
-**Ajith Kumar K** ([@ajithakdev](https://github.com/ajithakdev))
-
-- GitHub: [github.com/ajithakdev](https://github.com/ajithakdev)
-- Email: ajithkumarks2579@gmail.com
+Made by Ajith Kumar K ([@ajithakdev](https://github.com/ajithakdev)).
