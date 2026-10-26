@@ -6,7 +6,7 @@ Update this file at the end of each work session. Keep it short. Delete entries 
 
 ## In progress (2026-10-24)
 
-Major release 2027.0.0 on branch `release/v2027.0.0`, releasing Monday 2026-10-26 (slipped a day). The owner has tested the site and the extension locally and signed both off. The PR merges only on the owner's word.
+Major release 2027.0.0 on branch `release/v2027.0.0`, releasing Tuesday 2026-10-27 (slipped from Sunday). The owner has tested the site and the extension locally and signed both off. The PR merges only on the owner's word.
 
 Done on the branch:
 - Repo renamed to `ajithakdev/meterx` and split into `apps/`, `services/` and `packages/`. `npm run package` makes the store zips; `npm run dev:ext` and `npm run dev:site` run local tests.
@@ -15,10 +15,10 @@ Done on the branch:
 - Cleanup: unused code, IDE files and a dev dependency removed; `privacy-policy.md` now points to the site.
 
 Next, in order (Sunday):
-1. Owner says merge; squash-merge the PR.
+1. Owner says merge; squash-merge the PR (main has a `protect-main` ruleset, so it needs the admin bypass).
 2. Release: CHANGELOG section is already on the PR; tag `v2027.0.0` on the squash commit, `gh release create`.
 3. `cd services/worker && npx wrangler deploy` (the site's quick test and settings check need the new worker).
-4. Site, first time: create the Pages project, deploy, add the custom domain (steps in RESOURCES-AND-GUIDE.md, "First site deploy").
+4. Site: Pages project `meterx-site` and the `meterx.ajithakdev.com` domain and CNAME exist (2026-10-27); run `npm run deploy -w @meterx/site`.
 5. Store uploads from `release/` with images from `brand/png/store/`: Firefox, Edge, Opera (all free). Set each listing's website and privacy URL to the site. Chrome Web Store needs a paid developer fee, so it waits for the owner's call.
 6. SEO one-time setup in `docs/SEO.md` (Search Console sitemap, Bing), GitHub repo website field, portfolio entry.
 7. Opera listing link into `apps/site/src/stores.ts` once it is public.

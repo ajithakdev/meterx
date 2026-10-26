@@ -4,7 +4,7 @@ All notable changes to MeterX are documented here. The format follows [Keep a Ch
 
 ## [Unreleased]
 
-## [2027.0.0] - 2026-10-26
+## [2027.0.0] - 2026-10-27
 
 ### Added
 - The PDF report has a faint MeterX watermark, and every page shows a Report ID: a fingerprint of the results, so an edited copy no longer matches a fresh export of the same tests
