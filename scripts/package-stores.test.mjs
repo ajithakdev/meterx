@@ -1,5 +1,6 @@
+import { existsSync } from 'fs';
 import { describe, it, expect } from 'vitest';
-import { toFirefox } from './package-stores.mjs';
+import { STORE_FILES, toFirefox } from './package-stores.mjs';
 
 describe('toFirefox', () => {
     it('swaps the side panel for a sidebar, the worker for a background script, and adds the listing id', () => {
@@ -11,5 +12,12 @@ describe('toFirefox', () => {
         expect(f.background).toEqual({ scripts: ['background.js'], type: 'module' });
         expect(f.browser_specific_settings.gecko.id).toBe('meterx@ajithakdev');
         expect(m.side_panel).toBeDefined(); // the input is not changed
+    });
+});
+
+describe('STORE_FILES', () => {
+    it('lists only images that exist in brand/png', () => {
+        const images = Object.values(STORE_FILES).flat().filter(f => f.endsWith('.png'));
+        expect(images.filter(f => !existsSync(new URL(`../brand/png/${f}`, import.meta.url)))).toEqual([]);
     });
 });

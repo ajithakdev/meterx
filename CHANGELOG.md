@@ -4,6 +4,9 @@ All notable changes to MeterX are documented here. The format follows [Keep a Ch
 
 ## [Unreleased]
 
+### Added
+- `npm run package` also fills `release/upload/<store>/` with each store's zip and the image sizes it needs (Opera's 800x500 screenshots, 64px icon and 300x188 tile included); `docs/STORE-CHECKLIST.md` now walks through Edge, Opera and Firefox step by step
+
 ## [2027.0.1] - 2026-10-27
 
 ### Fixed

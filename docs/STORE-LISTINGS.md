@@ -1,6 +1,6 @@
 # Store listings
 
-The text for every store field, ready to paste. Update it here first when a feature changes, then paste it into each store. The rules behind it are in [STORE-CHECKLIST.md](STORE-CHECKLIST.md). Images come from `brand/png/store/` (made by `brand/build.mjs`).
+The text for every store field, ready to paste. Update it here first when a feature changes, then paste it into each store. The steps and rules are in [STORE-CHECKLIST.md](STORE-CHECKLIST.md). `npm run package` puts each store's zip and images in `release/upload/<store>/`; the images come from `brand/png/` (made by `brand/build.mjs`, plus the Opera sizes below).
 
 ## Shared fields
 
@@ -54,15 +54,47 @@ A free, open-source speed test in your toolbar. Measures download, upload, ping,
 
 ## Release notes for 2027.0.1
 
+Short form, for Edge's certification notes and Opera's changelog:
+
 ```text
 A full redesign: new look, live test view, latency under load graded A to F, a PDF report with a report ID, CSV and JSON exports, a light or dark appearance setting, and a new logo. Library updates with security fixes.
+```
+
+Long form, for Firefox's release notes (shown on the listing):
+
+```text
+MeterX has been rebuilt from the ground up.
+
+- A new look, with light and dark themes (or follow your system)
+- Watch the test live as it runs
+- Latency under load, graded A to F, so you can see why calls stutter while something downloads
+- A PDF report you can hand to your ISP, plus CSV and JSON exports
+- Sidebar history with a trend chart and a check against your ISP plan
+- A new logo
+- Library updates with security fixes
+```
+
+## Shorter description
+
+If a store's form errors on the full description (Opera did once), use this one; it has no links:
+
+```text
+MeterX tests your internet connection from the toolbar and tells you what the result means.
+
+Click the MeterX icon and press Run test. In about 20 seconds you get download and upload speed, ping, jitter and packet loss, plus latency under load (bufferbloat) graded A to F. That busy-line ping is why video calls stutter while something else downloads. MeterX also says in plain words whether your connection is good enough for video calls, 4K streaming, gaming and uploads.
+
+The side panel keeps up to 200 results with averages and a trend chart, shows how much of your ISP plan's speed arrives, and exports a PDF report, CSV or JSON. Share links carry the result inside the link.
+
+In settings you can schedule tests every 30 minutes, every 2 hours or once a day, get a notice when quality drops to Poor, pick a light or dark look, or use your own self-hosted test server.
+
+No account, no ads and no analytics. Results are stored in your browser. MeterX is free and open source under the AGPL-3.0 license.
 ```
 
 ## Microsoft Edge (Partner Center)
 
 Dashboard: https://partner.microsoft.com/dashboard/microsoftedge/overview
 
-Package: `release/meterx-<version>-chromium.zip`.
+Package: `release/upload/edge/` (the Chromium zip and every image below).
 
 Properties: category Productivity, website and support as above, mature content unchecked.
 
@@ -95,7 +127,7 @@ Privacy tab:
 | Privacy policy URL | `https://meterx.ajithakdev.com/privacy/` |
 | Certifications | Tick all three. |
 
-Notes for certification: the reviewer notes in [STORE-CHECKLIST.md](STORE-CHECKLIST.md#8-notes-for-reviewers-paste-into-every-store).
+Submit page: "Does a tester need credentials?" No. Notes for certification: the reviewer notes in [STORE-CHECKLIST.md](STORE-CHECKLIST.md#8-notes-for-reviewers-paste-into-every-store), plus the short release notes.
 
 ## Opera Add-ons
 
@@ -103,7 +135,7 @@ Dashboard: https://addons.opera.com/developer/. MeterX is slug `meterx-by-ajitha
 
 Update the existing entry, never a new one: Opera rejects duplicates, and the ID stays the same. Versions tab, "Copy metadata from version" set to the newest one, then upload `release/meterx-<version>-chromium.zip`, open the new version, edit its listing and submit it for moderation.
 
-Images are in `brand/png/store/opera/`, because Opera caps screenshots at 800x600 (612x408 preferred) and wants the promotional image at exactly 300x188, non-interlaced PNG. Remake them after `brand/build.mjs` changes the store images:
+Files: `release/upload/opera/`. The images live in `brand/png/store/opera/`, because Opera caps screenshots at 800x600 (612x408 preferred) and wants the promotional image at exactly 300x188, non-interlaced PNG. Remake them after `brand/build.mjs` changes the store images:
 
 ```sh
 cd brand/png/store
@@ -149,7 +181,7 @@ Hello, version 2027.0.1 replaces 2026.3.20.1, which is still waiting for moderat
 
 Dashboard: https://addons.mozilla.org/developers/addon/meterx-by-ajithakdev/versions/submit/
 
-Package: `release/meterx-<version>-firefox.zip`. When asked whether the code is minified or bundled, answer yes and upload `release/meterx-<version>-source.zip`. Summary, description and release notes from above.
+Files: `release/upload/firefox/` (Firefox zip, source zip, 128px icon, screenshots). Summary, description and the long release notes from above.
 
 Compatibility: Firefox only. Leave Firefox for Android unticked until it is tested; Android has no sidebar.
 
@@ -167,4 +199,60 @@ innerHTML: our own uses (src/lib/ui.ts and src/pages/sidepanel.ts) only insert f
 No data is collected (data_collection_permissions: none). Source: https://github.com/ajithakdev/meterx, tag v<version>.
 ```
 
-After submitting, Manage Listing holds the summary, description, homepage, support site, screenshots and privacy policy.
+Manage Listing, after submitting:
+
+| Field | Value |
+| --- | --- |
+| Summary, description | From above |
+| Categories | Web Development, Alerts & Updates |
+| Tags | download, privacy, streaming |
+| Homepage | `https://meterx.ajithakdev.com` |
+| Support website | `https://github.com/ajithakdev/meterx/issues` |
+| Icon | `icon-128.png` |
+| Screenshots | The five 1280x800 files |
+| License | GNU Affero General Public License v3.0 only |
+| Developer comments | Found a bug or have an idea? Open an issue at https://github.com/ajithakdev/meterx/issues. MeterX is open source, so you can read exactly what it does. |
+| Privacy policy | The text below |
+
+Privacy policy text for AMO (the site's policy without the side panel, which the Firefox build does not use). Keep it in step with `apps/site/static/privacy/index.html`:
+
+```markdown
+MeterX collects no personal data. Your results stay in your browser.
+
+Last updated 27 October 2026. Applies to MeterX 2027.0.0 and later. The current version is always at https://meterx.ajithakdev.com/privacy/
+
+## What the extension stores
+
+- Your test results (download, upload, ping, jitter, packet loss, latency under load, the Cloudflare location and the network name the server reports), up to 200 of them, in your browser's local extension storage.
+- Your settings: the test server address, your ISP plan if you enter one, the schedule for automatic tests, whether to notify you, and the appearance. These are in your browser's synced extension storage, so they follow your browser account if you use sync.
+
+Nothing is sent to MeterX or anyone else. Uninstalling the extension, or clearing its storage, deletes all of it.
+
+## What a test sends
+
+A test exchanges data with the test server: it downloads test bytes, uploads test bytes that the server throws away, and sends small ping requests. As with any web request, the server sees your IP address. The default server is a Cloudflare Worker that:
+
+- keeps no request logs and no database, and stores nothing about you;
+- returns your IP address, its type (IPv4 or IPv6), the network name, city, country and Cloudflare location, so the extension can show them. These come from Cloudflare's own lookup of your IP and are not kept by the worker.
+
+Cloudflare runs the network the worker is on, and its handling of traffic is covered by Cloudflare's privacy policy. If you set a custom server, your tests go to that server instead, and its owner's policy applies.
+
+## Permissions and why
+
+- Storage: to keep your results and settings.
+- Alarms: to run tests on the schedule you choose. Off by default.
+- Notifications: to tell you when a scheduled test finds that quality has dropped, if you turn it on.
+- Access to the test server's address: to run tests. Access to a custom server is asked for only when you add one.
+
+## Share links and reports
+
+A share link carries the result inside the link itself, after the # sign, which browsers never send to a server. The MeterX website reads it in your browser to show the result. PDF, CSV and JSON reports are made on your device and saved where you choose.
+
+## Children
+
+MeterX is not aimed at children and collects no personal data from anyone.
+
+## Changes and contact
+
+Changes to this policy are listed in the repository's history (https://github.com/ajithakdev/meterx), and the date above is updated. Questions go to https://github.com/ajithakdev/meterx/issues or ajithkumarks2579@gmail.com.
+```
