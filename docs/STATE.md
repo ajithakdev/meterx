@@ -12,7 +12,7 @@ Next:
 1. Store reviews: Edge, Opera and Firefox 2027.0.1 submitted 2026-10-27. Delete the old never-published Opera entry (slug `meterx-by-ajithakdev`) if it still exists. Chrome Web Store needs a paid developer fee, so it waits for the owner's call.
 2. Opera listing link into `apps/site/src/stores.ts` and the README once it is public.
 3. SEO one-time setup in `docs/SEO.md` (Search Console sitemap, Bing), portfolio entry.
-4. #97: skip history for private-window tests (next patch).
+4. #97: skip history for private-window tests (next patch). Same release: add "appearance" to the settings list on the site privacy page (`apps/site/static/privacy/index.html`) and bump its date; the AMO copy already has it.
 5. Verify and close the scan's issues (#60, #64 to #70, #73, #76 to #79, #81, #82, #85); check #61 to #63, #80, #87.
 
 ## Releases
