@@ -21,9 +21,9 @@ Every link for MeterX, what it is for, and how to run, package and release it. P
 | https://meterx.ajithakdev.com/contribute/ | Contribute: live issues for newcomers and contributors from GitHub |
 | https://meterx.ajithakdev.com/privacy/ | Privacy policy (the stores link here) |
 | https://meterx.ajithakdev.com/r/ | Share viewer: opens links made by the Share button |
-| https://addons.mozilla.org/firefox/addon/meterx-by-ajithakdev/ | Firefox listing (add-on id `meterx@ajithakdev`) |
-| https://microsoftedge.microsoft.com/addons/detail/glkpolbkpachomgmmhdkmjnghejbhlfc | Microsoft Edge listing |
-| Opera Add-ons | Listing link not found yet; add it to `apps/site/src/stores.ts` when known |
+| https://addons.mozilla.org/firefox/addon/meterx-by-ajithakdev/ | Firefox listing (add-on id `meterx@ajithakdev`), 2027.0.1 live since 2026-10-27 |
+| https://microsoftedge.microsoft.com/addons/detail/glkpolbkpachomgmmhdkmjnghejbhlfc | Microsoft Edge listing (2027.0.1 in review from 2026-10-27) |
+| Opera Add-ons | Not public yet: 2027.0.1 awaiting moderation (slug `meterx-by-ajithakdev-2`). Add the link to `apps/site/src/stores.ts` and the README once it's public |
 | https://meterx-speedtest.meterx-ajithakdev.workers.dev | Default test server (Cloudflare Worker) |
 
 ### Behind the scenes
@@ -65,6 +65,7 @@ Every link for MeterX, what it is for, and how to run, package and release it. P
 | Test the extension | `npm run dev:ext` (builds, runs the worker on http://localhost:8787; load `apps/extension/dist` with Load unpacked) |
 | Package for the stores | `npm run package`: `release/meterx-<version>-chromium.zip` (Chrome, Edge, Opera), `-firefox.zip`, `-source.zip` (upload with the Firefox build) |
 | Deploy the worker | `cd services/worker && npx wrangler deploy` |
+| Try a worker change before release | `cd services/worker && npx wrangler versions upload` makes a preview at `https://<first 8 chars of the version id>-meterx-speedtest.meterx-ajithakdev.workers.dev` without touching production. Compare CPU per version in Cloudflare's GraphQL analytics (`workersInvocationsAdaptive`, dimension `scriptVersion`); keep the 90th percentile under the free plan's 10 ms |
 | Deploy the site | `npm run deploy -w @meterx/site`: builds the extension and site and uploads to Cloudflare Pages project `meterx-site`. Not connected to git, so merges (docs or code) never deploy |
 | First site deploy (once) | `npx wrangler pages project create meterx-site --production-branch main`, then `npm run deploy -w @meterx/site`, then in the Cloudflare dashboard: Workers and Pages, `meterx-site`, Custom domains, add `meterx.ajithakdev.com` (Cloudflare adds the CNAME itself). Then set the GitHub repo's website to the site |
 | Submit to the stores | `npm run package`, then follow `docs/STORE-CHECKLIST.md` store by store (Edge, Opera, Firefox). Each store's zip and images are in `release/upload/<store>/`, and every field's text is in `docs/STORE-LISTINGS.md`. Chrome Web Store needs a one-time paid developer fee, so it waits |
