@@ -1,9 +1,10 @@
-/// <reference types="chrome" />
-
 /**
  * Theme override from settings. Unset follows prefers-color-scheme, which some browsers
  * (Firefox among them) take from the OS rather than the browser's own theme.
  */
+
+/// <reference types="chrome" />
+
 export const THEME_KEY = 'theme';
 export type Theme = 'system' | 'light' | 'dark';
 
