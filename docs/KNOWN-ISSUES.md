@@ -18,6 +18,7 @@ Remove a row when its fix is merged.
 | #67 | Low | Notify-on-drop fires on every poor result; quality rules in three copies |
 | #69 | Low | DNS time can come from an earlier test |
 | #71 | Low | `edge` is never set on results |
+| #97 | Med | Results from private windows are saved to history (Firefox policy: must not store private-browsing data) |
 
 ## Extension UI
 

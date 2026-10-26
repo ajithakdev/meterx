@@ -4,6 +4,14 @@ All notable changes to MeterX are documented here. The format follows [Keep a Ch
 
 ## [Unreleased]
 
+## [2027.0.1] - 2026-10-27
+
+### Fixed
+- Updated the PDF export's libraries (DOMPurify 3.4.17, fflate 0.8.3) and the self-host server's Express dependencies (body-parser 2.4.0 and others) to versions without known security advisories
+
+### Added
+- `docs/STORE-CHECKLIST.md`: what to check before each store upload, built from the Firefox, Edge, Opera and Chrome store policies
+
 ## [2027.0.0] - 2026-10-27
 
 ### Added
@@ -173,7 +181,8 @@ First store release, store version 2026.3.19.1 ("Major Rewrite One").
 - Express.js server with test file generation
 - Simple popup UI
 
-[Unreleased]: https://github.com/ajithakdev/meterx/compare/v2027.0.0...HEAD
+[Unreleased]: https://github.com/ajithakdev/meterx/compare/v2027.0.1...HEAD
+[2027.0.1]: https://github.com/ajithakdev/meterx/compare/v2027.0.0...v2027.0.1
 [2027.0.0]: https://github.com/ajithakdev/meterx/compare/v2026.2.0...v2027.0.0
 [2026.2.0]: https://github.com/ajithakdev/meterx/compare/v2026.1.0...v2026.2.0
 [2026.1.0]: https://github.com/ajithakdev/meterx/compare/v2026.0.0...v2026.1.0
