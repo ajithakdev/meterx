@@ -12,6 +12,10 @@ All notable changes to MeterX are documented here. The format follows [Keep a Ch
 ### Added
 - Appearance setting: Match system, Light or Dark. Firefox gives extension pages the system's light or dark setting rather than Firefox's own theme, so the popup and sidebar could disagree with the browser; now you can pick
 - `docs/STORE-CHECKLIST.md`: what to check before each store upload, built from the Firefox, Edge, Opera and Chrome store policies
+- `SECURITY.md` with what MeterX trusts and how to report privately, issue forms for bugs and features, and `npm run check:docs`, which checks the docs' sections, links, spelling and headings as part of `npm test`
+
+### Changed
+- README rewritten around install, privacy and data, how a test works and a FAQ; CONTRIBUTING covers loading the extension in Firefox and the pull request rules
 
 ## [2027.0.0] - 2026-10-27
 

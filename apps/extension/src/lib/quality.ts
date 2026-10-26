@@ -1,5 +1,5 @@
 /**
- * Quality rules live in @meterx/shared so the site uses the same ones; this file adds the toolbar badge colours.
+ * Quality rules live in @meterx/shared so the site uses the same ones; this file adds the toolbar badge colors.
  * @license AGPL-3.0
  */
 

@@ -80,7 +80,7 @@ In each browser:
 - [ ] Upload `-chromium.zip`.
 - [ ] Summary in full, grammatical sentences that say what it does. Description says how to use it and what it looks like.
 - [ ] Nothing in the name or images says "Opera" or suggests Opera made it.
-- [ ] Icons at every size share one style and are not just a word on a colour.
+- [ ] Icons at every size share one style and are not just a word on a color.
 - [ ] Screenshots are PNG, not interlaced, and the popup screenshot matches the popup's real size.
 - [ ] Third-party libraries (`vendor/charts.js`, jsPDF in the bundles) are unmodified releases without known vulnerabilities. Run `npm audit --omit=dev`.
 - [ ] Once the listing is public, put its link in `apps/site/src/stores.ts` and the README.

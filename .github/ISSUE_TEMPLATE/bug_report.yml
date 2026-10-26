@@ -1,0 +1,37 @@
+name: Bug report
+description: Something in MeterX doesn't work or shows the wrong result
+labels: [bug]
+body:
+  - type: dropdown
+    id: browser
+    attributes:
+      label: Browser
+      options: [Firefox, Microsoft Edge, Opera, Chrome (unpacked), Brave or Vivaldi (unpacked), Other]
+    validations:
+      required: true
+  - type: input
+    id: versions
+    attributes:
+      label: Browser and MeterX versions
+      description: MeterX's version is at the bottom of its settings page.
+      placeholder: Firefox 158.0.1, MeterX 2027.0.1
+    validations:
+      required: true
+  - type: dropdown
+    id: server
+    attributes:
+      label: Test server
+      options: [Default (Cloudflare), Custom server]
+  - type: textarea
+    id: steps
+    attributes:
+      label: What you did and what happened
+      description: Steps to reproduce, what you expected, and what you saw. A screenshot helps.
+    validations:
+      required: true
+  - type: textarea
+    id: console
+    attributes:
+      label: Console errors
+      description: "Firefox: about:debugging, This Firefox, Inspect next to MeterX. Chromium: the extensions page, service worker link."
+      render: text

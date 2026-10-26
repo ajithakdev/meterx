@@ -84,6 +84,10 @@ Every link for MeterX, what it is for, and how to run, package and release it. P
 | Firefox upload rejected for a missing id | Upload the `-firefox.zip` from `npm run package`, not the Chromium zip |
 | Site build fails with "Build the extension first" | Run `npm run build` from the root, or build `@meterx/extension` before `@meterx/site` |
 | The demo pages on the site look out of date | Rebuild: the site copies the current extension build into `/app/` |
+| Popup or side panel colors don't match the browser's theme | Firefox gives extensions the system's light or dark setting. Pick Light or Dark under Appearance in MeterX settings |
+| Popup looks bigger in Firefox than in Chromium | Not a bug: each browser scales CSS pixels its own way (check `devicePixelRatio` in the popup's console). On GNOME, setting Chromium's "Preferred Ozone platform" flag to Wayland often fixes its scale |
+| Firefox won't load `apps/extension/dist/` | That folder has the Chromium manifest. Run `npm run package` and load `release/meterx-<version>-firefox.zip` on `about:debugging` |
+| Someone reports a security problem | Point them to SECURITY.md (private reporting is on under the repo's Security tab) |
 
 ## More detail
 

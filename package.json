@@ -15,12 +15,17 @@
     "build": "npm run build --workspaces --if-present",
     "start": "node services/server/dist/server.js",
     "dev": "npm run build --workspaces --if-present && node services/server/dist/server.js",
-    "test": "npm run test --workspaces --if-present && vitest run scripts",
+    "test": "npm run test --workspaces --if-present && vitest run scripts && npm run check:docs",
     "package": "node scripts/package-stores.mjs",
     "dev:site": "node scripts/dev.mjs site",
-    "dev:ext": "node scripts/dev.mjs ext"
+    "dev:ext": "node scripts/dev.mjs ext",
+    "check:docs": "bash scripts/guidelines.sh"
   },
-  "keywords": ["speed-test", "browser-extension", "network-monitor"],
+  "keywords": [
+    "speed-test",
+    "browser-extension",
+    "network-monitor"
+  ],
   "author": "ajithakdev (https://github.com/ajithakdev)",
   "license": "AGPL-3.0",
   "devDependencies": {
