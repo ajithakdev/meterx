@@ -99,9 +99,36 @@ Notes for certification: the reviewer notes in [STORE-CHECKLIST.md](STORE-CHECKL
 
 ## Opera Add-ons
 
-Dashboard: https://addons.opera.com/developer/
+Dashboard: https://addons.opera.com/developer/ (MeterX is package 303783, ID `oajjobbjfpknebicnnneloildijibgdk`).
 
-Package: the same `-chromium.zip`, uploaded with Upgrade on the existing MeterX entry. Summary and description from above. Screenshots: the five 1280x800 files. Keep "Opera" out of the name, text and images.
+Update the existing entry, never a new one: Opera rejects duplicates, and the ID stays the same. Versions tab, "Copy metadata from version" set to the newest one, then upload `release/meterx-<version>-chromium.zip`, open the new version, edit its listing and submit it for moderation.
+
+Images are in `brand/png/store/opera/`, because Opera caps screenshots at 800x600 (612x408 preferred) and wants the promotional image at exactly 300x188, non-interlaced PNG. Remake them after `brand/build.mjs` changes the store images:
+
+```sh
+cd brand/png/store
+for i in 1 2 3 4 5; do ffmpeg -y -i screenshot-$i-1280x800.png -vf "scale=800:500:flags=lanczos" -pix_fmt rgb24 opera/screenshot-$i-800x500.png; done
+ffmpeg -y -i promo-440x280.png -vf "scale=300:191:flags=lanczos,crop=300:188" -pix_fmt rgb24 opera/promo-300x188.png
+```
+
+| Field | Value |
+| --- | --- |
+| Name (General tab, editable only until first publication) | MeterX by ajithakdev |
+| Category | Productivity |
+| Summary | The short summary above |
+| Description | The description above |
+| Screenshots | `opera/screenshot-1` to `-5` (800x500) |
+| Promotional image tab | `opera/promo-300x188.png` |
+| License | AGPL-3.0 if listed; otherwise point the license URL at `https://github.com/ajithakdev/meterx/blob/main/LICENSE` |
+| Homepage and support | Website and support from the shared fields |
+
+Keep "Opera" out of the name, text and images.
+
+Message for the Conversation tab when a version replaces one still in the queue:
+
+```text
+Hello, version 2027.0.1 replaces 2026.3.20.1, which is still waiting for moderation. Please review 2027.0.1 instead. It is a full redesign of the same extension: a speed test that measures download, upload, ping, jitter, packet loss and latency under load against our own test server. No account is needed to test it. The code is not minified, and the source is at https://github.com/ajithakdev/meterx. Thank you.
+```
 
 ## Firefox Add-ons
 
