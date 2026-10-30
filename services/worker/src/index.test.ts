@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import worker, { type Env } from './index';
-import { VERSION } from '@meterx/shared';
+import { ALLOWED_SIZES_MB, MAX_UPLOAD_BYTES, VERSION } from '@meterx/shared';
 
 const EXT = 'chrome-extension://abcdefghijklmnop';
 const call = (path: string, init: RequestInit = {}, env: Env = {}) =>
@@ -30,6 +30,18 @@ describe('worker', () => {
         expect(ok.status).toBe(200);
         const bad = await call('/upload', { method: 'POST', headers: { 'Content-Type': 'text/plain' }, body: 'x' });
         expect(bad.status).toBe(415);
+    });
+
+    it('reads a body with a declared length in one go, and refuses one declared over the cap', async () => {
+        const headers = (n: number) => ({ 'Content-Type': 'application/octet-stream', 'Content-Length': String(n) });
+        expect((await call('/upload', { method: 'POST', headers: headers(4096), body: new Uint8Array(4096) })).status).toBe(200);
+        expect((await call('/upload', { method: 'POST', headers: headers(MAX_UPLOAD_BYTES + 1), body: new Uint8Array(1) })).status).toBe(413);
+    });
+
+    it('streams every allowed size exactly, including sizes not a multiple of the chunk', async () => {
+        for (const mb of ALLOWED_SIZES_MB) {
+            expect((await (await call(`/test-file/${mb}MB.bin`)).arrayBuffer()).byteLength).toBe(mb * 1024 * 1024);
+        }
     });
 
     it('returns a typed health response', async () => {

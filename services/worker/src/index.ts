@@ -15,7 +15,8 @@ export interface Env {
     RATE_LIMITER?: RateLimit;
 }
 
-const CHUNK_SIZE = 64 * 1024;
+// 4 MiB chunks: a 25 MB file is 7 pulls instead of 400, which keeps CPU time near the free plan's 10 ms limit.
+const CHUNK_SIZE = 4 * 1024 * 1024;
 const ZEROS = new Uint8Array(CHUNK_SIZE);
 
 interface CfProps { colo?: string; asOrganization?: string; city?: string; country?: string }
@@ -66,6 +67,13 @@ function handleDownload(request: Request, file: string): Response {
 async function handleUpload(request: Request): Promise<Response> {
     if (!(request.headers.get('Content-Type') || '').includes('application/octet-stream')) {
         return text(request, 'Expected application/octet-stream', 415);
+    }
+    // With a declared length, one native read costs far less CPU than counting chunks in JS.
+    const declared = Number(request.headers.get('Content-Length'));
+    if (declared > MAX_UPLOAD_BYTES) return text(request, 'Payload too large', 413);
+    if (declared > 0) {
+        await request.arrayBuffer();
+        return text(request, 'Upload received.');
     }
     let received = 0;
     if (request.body) {
