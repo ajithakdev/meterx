@@ -22,4 +22,3 @@ The 33 issues from the 2026-10-22 code scan were checked against `main` on 2026-
 
 | Issue | Severity | Summary |
 | --- | --- | --- |
-| #86 | Low | CI doesn't lint or type-check the worker and packages; closes with #100 |
