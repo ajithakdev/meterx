@@ -4,6 +4,8 @@ All notable changes to MeterX are documented here. The format follows [Keep a Ch
 
 ## [Unreleased]
 
+## [2027.0.2] - 2026-10-31
+
 ### Changed
 - Worker uses far less CPU per request, to stay inside the Cloudflare free plan's 10 ms limit: downloads stream in 4 MiB chunks instead of 64 KB, and uploads with a declared length are read in one native call. Measured on preview versions on 2026-10-27: median CPU 16.1 ms to 5.6 ms, 90th percentile 20.4 ms to 7.2 ms
 - CI lints and type-checks the worker, `@meterx/shared` and `@meterx/reports` too (#86)
@@ -193,7 +195,8 @@ First store release, store version 2026.3.19.1 ("Major Rewrite One").
 - Express.js server with test file generation
 - Simple popup UI
 
-[Unreleased]: https://github.com/ajithakdev/meterx/compare/v2027.0.1...HEAD
+[Unreleased]: https://github.com/ajithakdev/meterx/compare/v2027.0.2...HEAD
+[2027.0.2]: https://github.com/ajithakdev/meterx/compare/v2027.0.1...v2027.0.2
 [2027.0.1]: https://github.com/ajithakdev/meterx/compare/v2027.0.0...v2027.0.1
 [2027.0.0]: https://github.com/ajithakdev/meterx/compare/v2026.2.0...v2027.0.0
 [2026.2.0]: https://github.com/ajithakdev/meterx/compare/v2026.1.0...v2026.2.0
