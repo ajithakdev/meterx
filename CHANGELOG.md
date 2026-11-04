@@ -4,6 +4,9 @@ All notable changes to MeterX are documented here. The format follows [Keep a Ch
 
 ## [Unreleased]
 
+### Added
+- Support links: "Support on Ko-fi" in the site footer and the extension's options page (plain links, nothing new loads), and a Support section in the README with Ko-fi and a UPI QR code
+
 ### Fixed
 - Tests run from a private or incognito window are no longer saved to history; the result still shows (#97)
 - A custom server URL typed with a trailing slash (`https://host/`) failed every test with 404s; Settings now tidies it before testing and saving (#68)

@@ -14,7 +14,7 @@
 [![Stars](https://img.shields.io/github/stars/ajithakdev/meterx?style=flat)](https://github.com/ajithakdev/meterx/stargazers)
 [![License: AGPL-3.0](https://img.shields.io/badge/License-AGPL--3.0-blue.svg)](LICENSE)
 
-[Install](#install) · [Privacy](#privacy-and-data) · [How it works](#how-it-works) · [FAQ](#faq) · [Website](https://meterx.ajithakdev.com) · [Guide](RESOURCES-AND-GUIDE.md)
+[Install](#install) · [Privacy](#privacy-and-data) · [How it works](#how-it-works) · [FAQ](#faq) · [Support](#support) · [Website](https://meterx.ajithakdev.com) · [Guide](RESOURCES-AND-GUIDE.md)
 
 </div>
 
@@ -103,6 +103,17 @@ npm run lint && npm test         # what CI runs, plus the docs check
 ## Credits
 
 Made and maintained by Ajith Kumar K ([@ajithakdev](https://github.com/ajithakdev)). The Geist font is by Vercel under the SIL Open Font License.
+
+## Support
+
+MeterX is free and stays free. If it helped you, a star, a follow on [GitHub](https://github.com/ajithakdev) or a bug report helps a lot. If you'd like to send a small thank-you:
+
+<table>
+  <tr>
+    <td align="center" valign="top" width="280"><b>From anywhere</b><br /><br /><a href="https://ko-fi.com/ajithakdev"><img src="https://ko-fi.com/img/githubbutton_sm.svg" alt="Support me on Ko-fi" /></a><br /><br /><sub>Card or PayPal on <a href="https://ko-fi.com/ajithakdev">ko-fi.com/ajithakdev</a></sub></td>
+    <td align="center" valign="top" width="280"><b>In India, over UPI</b><br /><br /><img src="docs/images/upi-qr.svg" width="120" height="120" alt="UPI QR code for ajithakdev@sbi" /><br /><code>ajithakdev@sbi</code><br /><sub>Scan or paste into GPay, PhonePe or any UPI app</sub></td>
+  </tr>
+</table>
 
 ## License
 
