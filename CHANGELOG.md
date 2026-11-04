@@ -4,6 +4,9 @@ All notable changes to MeterX are documented here. The format follows [Keep a Ch
 
 ## [Unreleased]
 
+### Added
+- Support section in the README (Ko-fi and UPI).
+
 ## [2027.0.2] - 2026-10-31
 
 ### Changed
