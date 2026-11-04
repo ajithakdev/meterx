@@ -25,6 +25,7 @@ Every link for MeterX, what it is for, and how to run, package and release it. P
 | https://microsoftedge.microsoft.com/addons/detail/glkpolbkpachomgmmhdkmjnghejbhlfc | Microsoft Edge listing (2027.0.1 in review from 2026-10-27) |
 | Opera Add-ons | Not public yet: 2027.0.1 awaiting moderation (slug `meterx-by-ajithakdev-2`). Add the link to `apps/site/src/stores.ts` and the README once it's public |
 | https://meterx-speedtest.meterx-ajithakdev.workers.dev | Default test server (Cloudflare Worker) |
+| https://ko-fi.com/ajithakdev | Tips. Linked from the site footer and the extension options page |
 
 ### Behind the scenes
 
