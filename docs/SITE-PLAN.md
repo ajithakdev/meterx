@@ -71,7 +71,7 @@ The five logo options are in the session scratchpad. After the choice:
 | Small promo tile | 440 x 280 | Chrome Web Store, Edge |
 | Marquee banner | 1400 x 560 | Chrome Web Store, Edge |
 | Screenshots | 1280 x 800, five of them | All stores: popup result, side panel history, live test, settings, PDF report |
-| Open Graph card | 1200 x 630 | The site and share links, in the same style as the s-portfolio card |
+| Open Graph card | 1200 x 630 | The site and share links, in the same style as the ajithakdev.com card |
 | GitHub social preview | 1280 x 640 | Repo page |
 | Favicon set | SVG, 32 px, 180 px Apple touch, 512 px maskable | The site |
 

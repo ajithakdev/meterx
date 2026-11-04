@@ -4,6 +4,9 @@ All notable changes to MeterX are documented here. The format follows [Keep a Ch
 
 ## [Unreleased]
 
+### Added
+- A "Support on Ko-fi" link in the site footer and on the extension's options page. Plain links; nothing new loads.
+
 ## [2027.0.2] - 2026-10-31
 
 ### Changed
