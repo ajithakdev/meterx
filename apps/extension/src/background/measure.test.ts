@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { toMbps, bytesAtTime, steadyMbps, median, latencyStats, gradeBufferbloat, uploadChunkBytes, nextUploadChunk, backoffMs } from './measure';
+import { toMbps, bytesAtTime, steadyMbps, median, latencyStats, gradeBufferbloat, nextUploadChunk, backoffMs } from './measure';
 
 const opts = { rampMs: 1000, tailMs: 500, durationMs: 8000 };
 
@@ -61,20 +61,6 @@ describe('latencyStats', () => {
 describe('gradeBufferbloat', () => {
     it.each([[0, 'A'], [5, 'A'], [30, 'B'], [60, 'C'], [200, 'D'], [201, 'F']] as const)('%d ms -> %s', (d, g) => {
         expect(gradeBufferbloat(d)).toBe(g);
-    });
-});
-
-describe('uploadChunkBytes', () => {
-    it('uses small bodies on slow links so requests finish (#60)', () => {
-        expect(uploadChunkBytes(10, 3)).toBe(256 * 1024);
-        expect(uploadChunkBytes(undefined, 3)).toBe(256 * 1024);
-    });
-    it('caps bodies on fast links', () => {
-        expect(uploadChunkBytes(5000, 3)).toBe(8 * 1024 * 1024);
-    });
-    it('targets about 4 completions per second per stream', () => {
-        // 300 Mbps over 3 streams = 12.5 MB/s per stream, quarter of that per body.
-        expect(uploadChunkBytes(300, 3)).toBe(3_125_000);
     });
 });
 

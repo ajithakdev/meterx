@@ -10,7 +10,7 @@
 import type { IpInfo, TestProgress, TestResults } from '@meterx/shared';
 import {
     type ByteSample, backoffMs, bytesAtTime, gradeBufferbloat, latencyStats,
-    median, nextUploadChunk, steadyMbps, toMbps, uploadChunkBytes, MAX_UPLOAD_CHUNK,
+    median, nextUploadChunk, steadyMbps, toMbps, MAX_UPLOAD_CHUNK, MIN_UPLOAD_CHUNK,
 } from './measure';
 
 const DOWNLOAD_PATH = '/test-file/25MB.bin';
@@ -200,9 +200,8 @@ export async function runTest(baseUrl: string, signal: AbortSignal, report: Repo
 
     report({ phase: 'upload', status: 'Testing upload' });
     const payload = new Uint8Array(MAX_UPLOAD_CHUNK);
-    const firstChunk = uploadChunkBytes(results.downloadSpeed, UPLOAD_STREAMS);
-    // Each stream resizes its body from its own last request (see nextUploadChunk).
-    const chunkOf: number[] = Array(UPLOAD_STREAMS).fill(firstChunk);
+    // Each stream starts small and resizes its body from its own last request (see nextUploadChunk).
+    const chunkOf: number[] = Array(UPLOAD_STREAMS).fill(MIN_UPLOAD_CHUNK);
     stopProbe = startLoadedProbe(baseUrl, signal);
     try {
         results.uploadSpeed = await runStreams(signal, UPLOAD_STREAMS, async (s, credit, stream) => {

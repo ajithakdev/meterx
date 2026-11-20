@@ -55,20 +55,9 @@ export function latencyStats(latencies: number[], attempts: number): { ping: num
 
 
 const KB = 1024;
-const MIN_UPLOAD_CHUNK = 256 * KB;
+/** Every upload stream starts here and grows from what it measures, so lopsided lines (fast down, slow up) still finish bodies (#60). */
+export const MIN_UPLOAD_CHUNK = 256 * KB;
 export const MAX_UPLOAD_CHUNK = 8 * 1024 * KB;
-
-/**
- * Upload body size so each stream finishes about 4 requests a second.
- * Bytes only count when a request completes, so fixed 5 MB bodies read
- * 0 Mbps on slow uplinks (#60). Sized from the download speed, which is
- * known by then and is usually the higher of the two.
- */
-export function uploadChunkBytes(downloadMbps: number | undefined, streams: number): number {
-    const perStreamBytesPerSec = ((downloadMbps || 0) * 1e6) / 8 / Math.max(1, streams);
-    const target = Math.round(perStreamBytesPerSec / 4);
-    return Math.min(MAX_UPLOAD_CHUNK, Math.max(MIN_UPLOAD_CHUNK, target));
-}
 
 const UPLOAD_TARGET_MS = 1000;
 
