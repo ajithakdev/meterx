@@ -2,8 +2,13 @@ name = "meterx-speedtest"
 main = "src/index.ts"
 compatibility_date = "2025-03-14"
 
+# /ping is a static asset (public/ping): free, unlimited, never a Worker request, same latency in an A/B test.
+# Downloads stay on the Worker: static assets added about 180 ms to each request's first byte (2026-11-21).
+[assets]
+directory = "./public"
+
 # Per-IP limit so one script can't use up the free plan's daily request quota (#79).
-# One test makes about 150 requests; 400 per minute leaves room for shared (CGNAT) IPs.
+# One test makes about 150 requests (about 115 now that pings are static); 400 per minute leaves room for shared (CGNAT) IPs.
 # Counts are per Cloudflare location and approximate.
 [[ratelimits]]
 name = "RATE_LIMITER"

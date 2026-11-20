@@ -4,6 +4,9 @@ All notable changes to MeterX are documented here. The format follows [Keep a Ch
 
 ## [Unreleased]
 
+### Changed
+- The worker serves `/ping` as a static asset, which Cloudflare does not count against the free plan's 100,000 requests a day. About 35 of a test's 150 requests are pings, so the same quota now covers about 30% more tests, with no extension update. An A/B test on 2026-11-21 showed the same ping times. Downloads stay on the Worker: as static assets, each request waited about 180 ms longer for its first byte
+
 ## [2027.0.2] - 2026-10-31
 
 ### Changed
