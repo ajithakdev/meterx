@@ -56,7 +56,7 @@ export function latencyStats(latencies: number[], attempts: number): { ping: num
 
 const KB = 1024;
 const MIN_UPLOAD_CHUNK = 256 * KB;
-const MAX_UPLOAD_CHUNK = 8 * 1024 * KB;
+export const MAX_UPLOAD_CHUNK = 8 * 1024 * KB;
 
 /**
  * Upload body size so each stream finishes about 4 requests a second.
@@ -68,6 +68,19 @@ export function uploadChunkBytes(downloadMbps: number | undefined, streams: numb
     const perStreamBytesPerSec = ((downloadMbps || 0) * 1e6) / 8 / Math.max(1, streams);
     const target = Math.round(perStreamBytesPerSec / 4);
     return Math.min(MAX_UPLOAD_CHUNK, Math.max(MIN_UPLOAD_CHUNK, target));
+}
+
+const UPLOAD_TARGET_MS = 1000;
+
+/**
+ * Next body size for one upload stream, from how long its last body took: aims at about
+ * 1 s per request, so a test spends about 24 Worker requests on uploads instead of about 96.
+ * Grows at most 4x per step, so a slow uplink behind a fast downlink still completes bodies (#60).
+ */
+export function nextUploadChunk(lastBytes: number, lastMs: number): number {
+    const ideal = lastMs > 0 ? (lastBytes * UPLOAD_TARGET_MS) / lastMs : lastBytes * 4;
+    const next = Math.round(Math.min(ideal, lastBytes * 4));
+    return Math.min(MAX_UPLOAD_CHUNK, Math.max(MIN_UPLOAD_CHUNK, next));
 }
 
 /** Delay before retrying a failed transfer request: 250 ms, doubling, capped at 2 s (#65). */

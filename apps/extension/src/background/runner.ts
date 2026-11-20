@@ -10,7 +10,7 @@
 import type { IpInfo, TestProgress, TestResults } from '@meterx/shared';
 import {
     type ByteSample, backoffMs, bytesAtTime, gradeBufferbloat, latencyStats,
-    median, steadyMbps, toMbps, uploadChunkBytes,
+    median, nextUploadChunk, steadyMbps, toMbps, uploadChunkBytes, MAX_UPLOAD_CHUNK,
 } from './measure';
 
 const DOWNLOAD_PATH = '/test-file/25MB.bin';
@@ -76,7 +76,7 @@ function startLoadedProbe(baseUrl: string, signal: AbortSignal): () => Promise<n
 async function runStreams(
     signal: AbortSignal,
     streams: number,
-    one: (signal: AbortSignal, credit: (bytes: number) => void) => Promise<void>,
+    one: (signal: AbortSignal, credit: (bytes: number) => void, stream: number) => Promise<void>,
     onLive: (mbps: number) => void,
 ): Promise<number> {
     const phase = new AbortController();
@@ -100,11 +100,11 @@ async function runStreams(
         }
     };
 
-    const loop = async () => {
+    const loop = async (stream: number) => {
         let failures = 0;
         while (!both.aborted) {
             try {
-                await one(both, credit);
+                await one(both, credit, stream);
                 failures = 0;
             } catch (e) {
                 if (both.aborted) break;
@@ -115,7 +115,7 @@ async function runStreams(
     };
 
     try {
-        await Promise.all(Array.from({ length: streams }, loop));
+        await Promise.all(Array.from({ length: streams }, (_, i) => loop(i)));
     } finally {
         clearTimeout(timer);
     }
@@ -199,18 +199,24 @@ export async function runTest(baseUrl: string, signal: AbortSignal, report: Repo
     report({ phase: 'download', downloadSpeed: results.downloadSpeed });
 
     report({ phase: 'upload', status: 'Testing upload' });
-    const payload = new Uint8Array(uploadChunkBytes(results.downloadSpeed, UPLOAD_STREAMS));
+    const payload = new Uint8Array(MAX_UPLOAD_CHUNK);
+    const firstChunk = uploadChunkBytes(results.downloadSpeed, UPLOAD_STREAMS);
+    // Each stream resizes its body from its own last request (see nextUploadChunk).
+    const chunkOf: number[] = Array(UPLOAD_STREAMS).fill(firstChunk);
     stopProbe = startLoadedProbe(baseUrl, signal);
     try {
-        results.uploadSpeed = await runStreams(signal, UPLOAD_STREAMS, async (s, credit) => {
+        results.uploadSpeed = await runStreams(signal, UPLOAD_STREAMS, async (s, credit, stream) => {
+            const body = payload.subarray(0, chunkOf[stream]);
+            const t0 = performance.now();
             const res = await fetch(bust(`${baseUrl}/upload`, 'u'), {
                 method: 'POST', cache: 'no-store', signal: s,
-                headers: { 'Content-Type': 'application/octet-stream' }, body: payload,
+                headers: { 'Content-Type': 'application/octet-stream' }, body,
             });
             if (!res.ok) throw new HttpError(res.status);
             await res.arrayBuffer();
             // fetch() has no upload progress, so bytes count when each body completes.
-            credit(payload.byteLength);
+            credit(body.byteLength);
+            chunkOf[stream] = nextUploadChunk(body.byteLength, performance.now() - t0);
         }, mbps => report({ phase: 'upload', uploadSpeed: mbps }));
     } finally {
         results.loadedPingUp = await stopProbe();

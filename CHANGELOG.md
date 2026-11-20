@@ -5,6 +5,7 @@ All notable changes to MeterX are documented here. The format follows [Keep a Ch
 ## [Unreleased]
 
 ### Changed
+- Upload streams resize each body from how long the last one took, aiming at about 1 s per request (growing at most 4x a step, so slow uplinks still finish bodies, #60). A test now makes about 24 upload requests instead of about 96, so the free server quota covers several times more tests
 - The worker serves `/ping` as a static asset, which Cloudflare does not count against the free plan's 100,000 requests a day. About 35 of a test's 150 requests are pings, so the same quota now covers about 30% more tests, with no extension update. An A/B test on 2026-11-21 showed the same ping times. Downloads stay on the Worker: as static assets, each request waited about 180 ms longer for its first byte
 
 ## [2027.0.2] - 2026-10-31
