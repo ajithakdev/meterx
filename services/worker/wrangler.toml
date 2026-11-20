@@ -2,6 +2,11 @@ name = "meterx-speedtest"
 main = "src/index.ts"
 compatibility_date = "2025-03-14"
 
+# Default test server. The zone has HTTP/3 off: Chrome uploads over QUIC stalled on Jio (2026-11-21).
+# workers.dev stays on so installs from before 2027.0.3 keep working.
+routes = [{ pattern = "meterx-api.ajithakdev.com", custom_domain = true }]
+workers_dev = true
+
 # /ping is a static asset (public/ping): free, unlimited, never a Worker request, same latency in an A/B test.
 # Downloads stay on the Worker: static assets added about 180 ms to each request's first byte (2026-11-21).
 [assets]

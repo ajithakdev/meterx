@@ -10,7 +10,7 @@
     "sidePanel"
   ],
   "host_permissions": [
-    "https://meterx-speedtest.meterx-ajithakdev.workers.dev/*"
+    "https://meterx-api.ajithakdev.com/*"
   ],
   "optional_host_permissions": [
     "https://*/*",

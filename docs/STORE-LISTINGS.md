@@ -121,7 +121,7 @@ Privacy tab:
 | alarms | Runs scheduled tests every 30 minutes, every 2 hours or once a day, only if you turn a schedule on in settings. Off by default. |
 | notifications | Shows a notice when a scheduled test finds that connection quality has dropped to Poor, only if you turn it on in settings. Off by default. |
 | sidePanel | Opens the history view (past results, trend chart, plan comparison and exports) in the side panel. |
-| Host permission | `https://meterx-speedtest.meterx-ajithakdev.workers.dev/*` is MeterX's own test server: the extension downloads and uploads test data to it to measure speed, and reads its timing headers. The optional `https://*/*`, localhost, 127.0.0.1 and `.local` patterns are requested at runtime only when you enter your own test server in settings, and only for that one server. |
+| Host permission | `https://meterx-api.ajithakdev.com/*` is MeterX's own test server: the extension downloads and uploads test data to it to measure speed, and reads its timing headers. The optional `https://*/*`, localhost, 127.0.0.1 and `.local` patterns are requested at runtime only when you enter your own test server in settings, and only for that one server. |
 | Remote code | No, I am not using remote code. Leave the justification empty. |
 | Data usage | Tick nothing. MeterX collects none of the listed data: results stay in the browser, and the test server stores nothing. |
 | Privacy policy URL | `https://meterx.ajithakdev.com/privacy/` |
@@ -190,7 +190,7 @@ Compatibility: Firefox only. Leave Firefox for Android unticked until it is test
 Notes to reviewer (used for 2027.0.1):
 
 ```text
-No account needed. Click the toolbar icon and press Run test; it takes about 20 seconds. Tests run against our own server (meterx-speedtest.meterx-ajithakdev.workers.dev), which streams test data and stores nothing. The sidebar, opened from the popup, shows history and exports.
+No account needed. Click the toolbar icon and press Run test; it takes about 20 seconds. Tests run against our own server (meterx-api.ajithakdev.com), which streams test data and stores nothing. The sidebar, opened from the popup, shows history and exports.
 
 Build: Linux, Node 24, npm 11. From the root of the source zip, run "npm ci && npm run package". It writes release/meterx-<version>-firefox.zip, identical to this upload. All dependencies come from npm via package-lock.json. The code is bundled with esbuild, not minified.
 
