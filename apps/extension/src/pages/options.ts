@@ -61,10 +61,10 @@ document.addEventListener('DOMContentLoaded', async () => {
         ispUp.value = String(plan.uploadMbps);
         ispProvider.value = plan.providerName ?? '';
     }
-    const scheduleMinutes: number = stored[SCHEDULE_KEY] ?? 0;
+    const scheduleMinutes: number = (stored[SCHEDULE_KEY] as number | undefined) ?? 0;
     scheduleRadios.forEach(r => { r.checked = Number(r.value) === scheduleMinutes || (r.value === 'off' && scheduleMinutes === 0); });
     if (notifyCheckbox) notifyCheckbox.checked = !!stored[NOTIFY_KEY];
-    const theme: Theme = stored[THEME_KEY] ?? 'system';
+    const theme: Theme = (stored[THEME_KEY] as Theme | undefined) ?? 'system';
     themeRadios.forEach(r => { r.checked = r.value === theme; });
 
     if (ispClearBtn) {
@@ -78,7 +78,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     // Load current setting
     const result = await chrome.storage.sync.get('serverUrl');
-    const currentUrl = result.serverUrl || '';
+    const currentUrl = (result.serverUrl as string | undefined) || '';
     const isCustom = currentUrl && currentUrl !== DEFAULT_URL;
 
     if (isCustom) {

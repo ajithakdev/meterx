@@ -70,6 +70,14 @@ export default defineConfig([
     files: ["apps/extension/**/*.css"],
     plugins: { css },
     language: "css/css",
-    extends: ["css/recommended"]
+    extends: ["css/recommended"],
+    rules: {
+      // Custom properties live in a separate stylesheet, which this rule cannot see.
+      "css/no-invalid-properties": ["error", { allowUnknownVariables: true }],
+      // The two uses are deliberate: [hidden] must win, and reduced motion must override every animation.
+      "css/no-important": "off",
+      // Extension pages run in current Chrome, Edge, Opera and Firefox only.
+      "css/use-baseline": ["error", { available: "newly", allowProperties: ["accent-color"] }]
+    }
   }
 ]);
