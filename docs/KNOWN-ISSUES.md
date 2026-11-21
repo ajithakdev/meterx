@@ -8,7 +8,6 @@ The 33 issues from the 2026-10-22 code scan were checked against `main` on 2026-
 
 | Issue | Severity | Summary |
 | --- | --- | --- |
-| #68 | Low | The settings page's Test button and Save don't normalize a custom server URL with a trailing slash |
 | #21 | Low | The background listens for a `run-test` shortcut, but the manifest declares no `commands` |
 
 ## Backends
