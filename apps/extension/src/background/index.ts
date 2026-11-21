@@ -59,7 +59,8 @@ async function maybeNotifyDrop(entry: HistoryEntry, previous?: HistoryEntry): Pr
     });
 }
 
-async function startTest(source: Source): Promise<void> {
+/** Tests started from a private window are shown but never saved: store policy forbids keeping private-browsing data (#97). */
+async function startTest(source: Source, incognito = false): Promise<void> {
     if (controller) return;
     controller = new AbortController();
     progress = {};
@@ -67,7 +68,7 @@ async function startTest(source: Source): Promise<void> {
         const results = await runTest(await getServerUrl(), controller.signal, report);
         const { serverUrl: _server, ...rest } = results;
         const entry: HistoryEntry = { ...rest, timestamp: Date.now() };
-        const previous = await saveHistory(entry);
+        const previous = incognito ? undefined : await saveHistory(entry);
         await setBadge(entry);
         broadcast({ action: 'testComplete', data: entry });
         if (source === 'schedule') await maybeNotifyDrop(entry, previous);
@@ -101,10 +102,10 @@ chrome.notifications?.onClicked.addListener(id => {
     if (id === DROP_NOTIFICATION) chrome.tabs.create({ url: chrome.runtime.getURL('sidepanel.html') });
 });
 
-chrome.runtime.onMessage.addListener((message: { action?: string }, _sender, sendResponse) => {
+chrome.runtime.onMessage.addListener((message: { action?: string; incognito?: boolean }, _sender, sendResponse) => {
     switch (message.action) {
         case 'startTest':
-            startTest('user');
+            startTest('user', message.incognito === true);
             sendResponse({ running: true });
             return false;
         case 'cancelTest':

@@ -8,6 +8,7 @@ All notable changes to MeterX are documented here. The format follows [Keep a Ch
 - Upload streams resize each body from how long the last one took, aiming at about 1 s per request, so a test makes far fewer server requests and the free quota covers several times more tests
 
 ### Fixed
+- Tests run from a private or incognito window are no longer saved to history; the result still shows (#97)
 - Chrome and Edge uploads stalled on some networks (seen on Jio): Chrome used HTTP/3 to the test server, and uploads over it hung until the test gave up. The default test server is now `meterx-api.ajithakdev.com`, served without HTTP/3. The extension asks for access to the new address once; the old `workers.dev` address keeps working for older versions
 - Upload read about half of the real speed in Chrome on fast lines (BSNL 60/60: 14 to 29 Mbps against curl's 55 to 66), because Chrome sends uploads over HTTP/2 slowly. Uploads now go to the worker's `workers.dev` address over HTTP/3 and read 53 to 66 Mbps on the same line. If any upload request there fails or stays open over 3 s, as on Jio, the upload phase starts again on `meterx-api.ajithakdev.com` (#104)
 - Upload read far too low, or failed with "No data reached the server", on lines with a much slower upload than download (for example Jio 5G: 124 Mbps down, about 4 up). The first upload body was sized from the download speed and could not finish in time; every stream now starts at 256 KB and grows from what it measures (#60)
