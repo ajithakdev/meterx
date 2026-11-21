@@ -41,6 +41,11 @@ interface SidebarAction { open(): Promise<void> }
 const firefoxSidebar = (): SidebarAction | undefined =>
     (globalThis as unknown as { browser?: { sidebarAction?: SidebarAction } }).browser?.sidebarAction;
 
+/** Whether this page sits in a private window. inIncognitoContext can't tell: it is false on Chrome's default "spanning" pages (#97). */
+export async function inPrivateWindow(): Promise<boolean> {
+    return (await chrome.windows.getCurrent().catch(() => undefined))?.incognito === true;
+}
+
 export function panelSupported(): boolean {
     return !!(chrome.sidePanel?.open || firefoxSidebar());
 }
