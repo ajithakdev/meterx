@@ -16,6 +16,7 @@ import { qualityOf } from '../lib/quality';
 import { applyTheme } from '../lib/theme';
 import { bindTooltips } from '../lib/tooltips';
 import { MARK_SVG, animatePhase, bindMenu, scopeLine, setFigure } from '../lib/ui';
+import { inPrivateWindow } from '../lib/browser';
 import { median } from '../background/measure';
 
 void applyTheme();
@@ -205,8 +206,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     const state = await chrome.runtime.sendMessage({ action: 'getState' }).catch(() => null) as { running: boolean; progress: TestProgress } | null;
     if (state?.running) { setRunning(true); applyProgress(state.progress); }
 
+    const incognito = await inPrivateWindow();
     $('runBtn').addEventListener('click', () => {
-        chrome.runtime.sendMessage({ action: running ? 'cancelTest' : 'startTest', incognito: chrome.extension?.inIncognitoContext });
+        chrome.runtime.sendMessage({ action: running ? 'cancelTest' : 'startTest', incognito });
         if (!running) { setStatus(''); setRunning(true); }
     });
     $('settingsBtn').addEventListener('click', () => chrome.runtime.openOptionsPage());
