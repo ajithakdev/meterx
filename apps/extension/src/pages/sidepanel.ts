@@ -206,7 +206,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (state?.running) { setRunning(true); applyProgress(state.progress); }
 
     $('runBtn').addEventListener('click', () => {
-        chrome.runtime.sendMessage({ action: running ? 'cancelTest' : 'startTest' });
+        chrome.runtime.sendMessage({ action: running ? 'cancelTest' : 'startTest', incognito: chrome.extension?.inIncognitoContext });
         if (!running) { setStatus(''); setRunning(true); }
     });
     $('settingsBtn').addEventListener('click', () => chrome.runtime.openOptionsPage());

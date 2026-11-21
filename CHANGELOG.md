@@ -7,6 +7,9 @@ All notable changes to MeterX are documented here. The format follows [Keep a Ch
 ### Changed
 - Development tools updated: ESLint 10, @eslint/css 2, Vitest 5, esbuild 0.28, @types/chrome 0.3 and others. TypeScript stays on 5.x until typescript-eslint supports TypeScript 7 (#101)
 
+### Fixed
+- Tests run from a private or incognito window are no longer saved to history; the result still shows (#97)
+
 ## [2027.0.2] - 2026-10-31
 
 ### Changed
