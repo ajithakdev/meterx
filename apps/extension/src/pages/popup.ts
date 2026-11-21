@@ -8,7 +8,7 @@
 /// <reference types="chrome" />
 
 import { buildShareUrl, type BroadcastMessage, type HistoryEntry, type Phase, type TestProgress } from '@meterx/shared';
-import { openPanel, panelSupported } from '../lib/browser';
+import { inPrivateWindow, openPanel, panelSupported } from '../lib/browser';
 import { exportCsv, exportJson } from '../lib/export-data';
 import { exportPdfReport } from '../lib/export-pdf';
 import { NONE, fmt, fmtSpeed, getTimeAgo } from '../lib/format';
@@ -125,12 +125,13 @@ document.addEventListener('DOMContentLoaded', async () => {
     updateRunButton();
     if (!navigator.onLine) setStatus("You're offline", true);
 
+    const incognito = await inPrivateWindow();
     els.run.addEventListener('click', () => {
         if (running) { chrome.runtime.sendMessage({ action: 'cancelTest' }); return; }
         setRunning(true);
         startView();
         setStatus('Connecting…');
-        chrome.runtime.sendMessage({ action: 'startTest', incognito: chrome.extension?.inIncognitoContext }).catch(() => {
+        chrome.runtime.sendMessage({ action: 'startTest', incognito }).catch(() => {
             setRunning(false);
             setStatus("Couldn't start the test. Reopen MeterX and try again.", true);
         });

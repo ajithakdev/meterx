@@ -69,7 +69,7 @@ async function startTest(source: Source, incognito = false): Promise<void> {
         const { serverUrl: _server, ...rest } = results;
         const entry: HistoryEntry = { ...rest, timestamp: Date.now() };
         const previous = incognito ? undefined : await saveHistory(entry);
-        await setBadge(entry);
+        if (!incognito) await setBadge(entry); // the badge shows in every window
         broadcast({ action: 'testComplete', data: entry });
         if (source === 'schedule') await maybeNotifyDrop(entry, previous);
     } catch (e) {
