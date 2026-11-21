@@ -1,6 +1,6 @@
 # MeterX working state
 
-Last updated: 2026-10-31, on `main` after the 2027.0.2 worker release.
+Last updated: 2026-11-21, on `feat/static-test-files` (PR #105).
 
 Update this file at the end of each work session. Keep it short. Delete entries once they are done and merged.
 
@@ -18,7 +18,7 @@ Next:
 1. Store reviews: Edge and Opera 2027.0.1 submitted 2026-10-27 (Firefox approved the same day). Delete the old never-published Opera entry (slug `meterx-by-ajithakdev`) if it still exists. Chrome Web Store needs a paid developer fee, so it waits for the owner's call.
 2. Opera listing link into `apps/site/src/stores.ts` and the README once it is public.
 3. SEO one-time setup in `docs/SEO.md` (Search Console sitemap, Bing), portfolio entry.
-4. Milestone 2027.1.0 (Sunday): #97 private-window history, #99 Firefox for Android, #68 settings URL, #21 shortcut. In the same release, add "appearance" to the settings list on the site privacy page (`apps/site/static/privacy/index.html`) and bump its date; the AMO copy already has it.
+4. #97 (private-window history, detected with `windows.getCurrent`) and #68 (settings URL trailing slash) are fixed on `main` (2026-11-21) and ship in the next release. Still open for 2027.1.0: #99 Firefox for Android, #21 keyboard shortcuts (a feature). In the same release, add "appearance" to the settings list on the site privacy page (`apps/site/static/privacy/index.html`) and bump its date; the AMO copy already has it.
 5. Issues triaged 2026-10-27: the scan's 31 fixed bugs and 7 shipped features are closed with evidence; 48 open, status comments on the partial ones (#13, #19, #54, #95).
 
 ## Releases
