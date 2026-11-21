@@ -8,6 +8,7 @@
 
 import { VERSION, WORKER_URL, type IspPlan } from '@meterx/shared';
 import { THEME_KEY, applyTheme, type Theme } from '../lib/theme';
+import { normalizeServerUrl, validateServerUrl } from '../lib/browser';
 
 void applyTheme();
 
@@ -107,27 +108,11 @@ document.addEventListener('DOMContentLoaded', async () => {
         });
     });
 
-    // Validate server URL matches manifest-declared optional_host_permissions patterns.
-    // Why: manifest now scopes http:// to localhost/127.0.0.1/*.local only. Reject anything else
-    // before chrome.permissions.request to surface a clear error instead of a silent denial.
-    function validateServerUrl(raw: string): string | null {
-        let parsed: URL;
-        try { parsed = new URL(raw); } catch { return 'Invalid URL format'; }
-        if (parsed.protocol === 'https:') return null;
-        if (parsed.protocol === 'http:') {
-            const host = parsed.hostname;
-            if (host === 'localhost' || host === '127.0.0.1' || host.endsWith('.local')) return null;
-            return 'Plain http:// only allowed for localhost, 127.0.0.1, or *.local. Use https for remote servers.';
-        }
-        return 'URL must use https:// (or http:// for localhost)';
-    }
-
     // Get active server URL
     function getActiveUrl(): string {
         const customRadio = document.querySelector('input[value="custom"]') as HTMLInputElement;
-        if (customRadio.checked && urlInput.value.trim()) {
-            return urlInput.value.trim();
-        }
+        const raw = urlInput.value.trim();
+        if (customRadio.checked && raw && !validateServerUrl(raw)) return normalizeServerUrl(raw);
         return DEFAULT_URL;
     }
 
@@ -188,10 +173,13 @@ document.addEventListener('DOMContentLoaded', async () => {
         const url = urlInput.value.trim();
         if (!url) { testStatus.textContent = 'Enter a URL first'; testStatus.className = 'test-status error'; return; }
 
+        const invalid = validateServerUrl(url);
+        if (invalid) { testStatus.textContent = invalid; testStatus.className = 'test-status error'; return; }
+
         testStatus.textContent = 'Testing...';
         testStatus.className = 'test-status';
 
-        const result = await testConnection(url);
+        const result = await testConnection(normalizeServerUrl(url));
         if (result.ok) {
             testStatus.textContent = `Connected in ${result.ping} ms${result.edge ? `, edge ${result.edge}` : ''}`;
             testStatus.className = 'test-status success';
@@ -232,7 +220,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 testStatus.className = 'test-status error';
                 return;
             }
-            await chrome.storage.sync.set({ serverUrl: url });
+            await chrome.storage.sync.set({ serverUrl: normalizeServerUrl(url) });
         } else {
             await chrome.storage.sync.remove('serverUrl');
         }

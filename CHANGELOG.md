@@ -9,6 +9,7 @@ All notable changes to MeterX are documented here. The format follows [Keep a Ch
 
 ### Fixed
 - Tests run from a private or incognito window are no longer saved to history; the result still shows (#97)
+- A custom server URL typed with a trailing slash (`https://host/`) failed every test with 404s; Settings now tidies it before testing and saving (#68)
 
 ## [2027.0.2] - 2026-10-31
 
