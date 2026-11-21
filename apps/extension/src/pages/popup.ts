@@ -130,7 +130,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         setRunning(true);
         startView();
         setStatus('Connecting…');
-        chrome.runtime.sendMessage({ action: 'startTest' }).catch(() => {
+        chrome.runtime.sendMessage({ action: 'startTest', incognito: chrome.extension?.inIncognitoContext }).catch(() => {
             setRunning(false);
             setStatus("Couldn't start the test. Reopen MeterX and try again.", true);
         });

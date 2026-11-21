@@ -4,6 +4,9 @@ All notable changes to MeterX are documented here. The format follows [Keep a Ch
 
 ## [Unreleased]
 
+### Fixed
+- Tests run from a private or incognito window are no longer saved to history; the result still shows (#97)
+
 ## [2027.0.2] - 2026-10-31
 
 ### Changed
