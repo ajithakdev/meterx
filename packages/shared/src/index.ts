@@ -18,6 +18,8 @@ export const MAX_UPLOAD_BYTES = 16 * 1024 * 1024;
 
 /** The default test server. Also listed in the extension's manifest host_permissions and the site's CSP; change all three together. */
 export const WORKER_URL = 'https://meterx-api.ajithakdev.com';
+/** The same worker on workers.dev, which keeps HTTP/3. The extension uploads there first (runner.ts) and lists it in host_permissions. */
+export const WORKER_H3_URL = 'https://meterx-speedtest.meterx-ajithakdev.workers.dev';
 
 /** The product site, which runs a short in-page test against the worker. */
 export const SITE_ORIGIN = 'https://meterx.ajithakdev.com';

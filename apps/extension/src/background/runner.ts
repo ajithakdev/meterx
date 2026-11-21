@@ -7,7 +7,7 @@
 
 /// <reference types="chrome" />
 
-import type { IpInfo, TestProgress, TestResults } from '@meterx/shared';
+import { WORKER_H3_URL, WORKER_URL, type IpInfo, type TestProgress, type TestResults } from '@meterx/shared';
 import {
     type ByteSample, backoffMs, bytesAtTime, gradeBufferbloat, latencyStats,
     median, nextUploadChunk, steadyMbps, toMbps, MAX_UPLOAD_CHUNK, MIN_UPLOAD_CHUNK,
@@ -16,6 +16,8 @@ import {
 const DOWNLOAD_PATH = '/test-file/25MB.bin';
 const DOWNLOAD_STREAMS = 4;
 const UPLOAD_STREAMS = 3;
+/** Bodies aim at about 1 s, so a request still open after 3 s has stalled. A line under about 0.7 Mbps up also trips it, harmlessly. */
+const UPLOAD_STALL_MS = 3000;
 // Multi-stream, fixed-duration phases (the M-Lab / Ookla approach).
 // The worker and Express rate limits are sized for this burst; raise them if you add streams.
 const MEASURE_DURATION_MS = 8000;
@@ -200,23 +202,45 @@ export async function runTest(baseUrl: string, signal: AbortSignal, report: Repo
 
     report({ phase: 'upload', status: 'Testing upload' });
     const payload = new Uint8Array(MAX_UPLOAD_CHUNK);
-    // Each stream starts small and resizes its body from its own last request (see nextUploadChunk).
-    const chunkOf: number[] = Array(UPLOAD_STREAMS).fill(MIN_UPLOAD_CHUNK);
-    stopProbe = startLoadedProbe(baseUrl, signal);
-    try {
-        results.uploadSpeed = await runStreams(signal, UPLOAD_STREAMS, async (s, credit, stream) => {
+    const upload = (base: string, stallMs?: number) => {
+        // Each stream starts small and resizes its body from its own last request (see nextUploadChunk).
+        const chunkOf: number[] = Array(UPLOAD_STREAMS).fill(MIN_UPLOAD_CHUNK);
+        const stalled = new AbortController();
+        return runStreams(AbortSignal.any([signal, stalled.signal]), UPLOAD_STREAMS, async (s, credit, stream) => {
             const body = payload.subarray(0, chunkOf[stream]);
             const t0 = performance.now();
-            const res = await fetch(bust(`${baseUrl}/upload`, 'u'), {
-                method: 'POST', cache: 'no-store', signal: s,
-                headers: { 'Content-Type': 'application/octet-stream' }, body,
-            });
-            if (!res.ok) throw new HttpError(res.status);
-            await res.arrayBuffer();
+            try {
+                const res = await fetch(bust(`${base}/upload`, 'u'), {
+                    method: 'POST', cache: 'no-store',
+                    signal: stallMs ? AbortSignal.any([s, AbortSignal.timeout(stallMs)]) : s,
+                    headers: { 'Content-Type': 'application/octet-stream' }, body,
+                });
+                if (!res.ok) throw new HttpError(res.status);
+                await res.arrayBuffer();
+            } catch (e) {
+                if (stallMs && !s.aborted) stalled.abort();
+                throw e;
+            }
             // fetch() has no upload progress, so bytes count when each body completes.
             credit(body.byteLength);
             chunkOf[stream] = nextUploadChunk(body.byteLength, performance.now() - t0);
         }, mbps => report({ phase: 'upload', uploadSpeed: mbps }));
+    };
+    stopProbe = startLoadedProbe(baseUrl, signal);
+    try {
+        // Chrome uploads over HTTP/2 read about half of a fast line, and over HTTP/3 they stall on some
+        // networks (Jio). The default server's uploads try its HTTP/3 address first; if any request there
+        // fails or takes over UPLOAD_STALL_MS, the phase starts again on the HTTP/2 address (#104).
+        if (baseUrl === WORKER_URL) {
+            try {
+                results.uploadSpeed = await upload(WORKER_H3_URL, UPLOAD_STALL_MS);
+            } catch (e) {
+                if (signal.aborted) throw e;
+                results.uploadSpeed = await upload(baseUrl);
+            }
+        } else {
+            results.uploadSpeed = await upload(baseUrl);
+        }
     } finally {
         results.loadedPingUp = await stopProbe();
     }
