@@ -1,3 +1,4 @@
+/// <reference types="node" /> // the test reads public/ files; the worker itself never sees Node types
 import { describe, it, expect } from 'vitest';
 import worker, { type Env } from './index';
 import { ALLOWED_SIZES_MB, MAX_UPLOAD_BYTES, VERSION } from '@meterx/shared';
@@ -64,8 +65,8 @@ describe('worker', () => {
 
 describe('/ping static asset', () => {
     it('answers Pong! with open CORS and timing headers', () => {
-        expect(readFileSync(new URL('../public/ping', import.meta.url), 'utf8')).toBe('Pong!');
-        const rules = readFileSync(new URL('../public/_headers', import.meta.url), 'utf8');
+        expect(readFileSync(`${import.meta.dirname}/../public/ping`, 'utf8')).toBe('Pong!');
+        const rules = readFileSync(`${import.meta.dirname}/../public/_headers`, 'utf8');
         expect(rules).toMatch(/\n\/ping\n {2}Access-Control-Allow-Origin: \*\n {2}Timing-Allow-Origin: \*/);
     });
 });

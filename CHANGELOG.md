@@ -9,6 +9,7 @@ All notable changes to MeterX are documented here. The format follows [Keep a Ch
 
 ### Changed
 - Upload streams resize each body from how long the last one took, aiming at about 1 s per request, so a test makes far fewer server requests and the free quota covers several times more tests
+- Development tools updated: ESLint 10, @eslint/css 2, Vitest 5, esbuild 0.28, @types/chrome 0.3 and others. TypeScript stays on 5.x until typescript-eslint supports TypeScript 7 (#101)
 
 ### Fixed
 - Tests run from a private or incognito window are no longer saved to history; the result still shows (#97)
