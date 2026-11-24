@@ -54,7 +54,7 @@ In each browser:
 | Secure transport | Default server is https. Plain http only for localhost, 127.0.0.1 and `.local` | `validateServerUrl` unchanged or still tested |
 | Data and privacy | No personal data collected. Results stay in browser storage. The test server sees the IP address, as any server does, and keeps no logs. Shares put the result in the link itself | Privacy policy at `https://meterx.ajithakdev.com/privacy/` still matches what the code does |
 | Listing is accurate | Description lists every feature, including scheduled tests and notifications | Screenshots show the current UI, not an old version |
-| Works for the reviewer | No account needed. The worker must be up | `curl https://meterx-speedtest.meterx-ajithakdev.workers.dev/health` returns the new version |
+| Works for the reviewer | No account needed. The worker must be up | `curl https://meterx-api.ajithakdev.com/health` returns the new version |
 | Name and trademarks | "MeterX by ajithakdev". No store or browser name in the extension name | Never add "for Chrome", "Opera" or "Edge" to the name |
 
 ## 4. Microsoft Edge Add-ons
@@ -110,7 +110,7 @@ MeterX is an internet speed test. No account or login is needed.
 
 To test: click the toolbar icon and press Run test. The test takes about 20 seconds and
 measures download, upload, ping, jitter, packet loss and latency under load against
-our test server (https://meterx-speedtest.meterx-ajithakdev.workers.dev), which
+our test server (https://meterx-api.ajithakdev.com), which
 streams bytes and stores nothing. Open the side panel from the popup to see history
 and exports (PDF, CSV, JSON).
 

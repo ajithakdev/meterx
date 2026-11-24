@@ -7,15 +7,17 @@
 
 /// <reference types="chrome" />
 
-import type { IpInfo, TestProgress, TestResults } from '@meterx/shared';
+import { WORKER_H3_URL, WORKER_URL, type IpInfo, type TestProgress, type TestResults } from '@meterx/shared';
 import {
     type ByteSample, backoffMs, bytesAtTime, gradeBufferbloat, latencyStats,
-    median, steadyMbps, toMbps, uploadChunkBytes,
+    median, nextUploadChunk, steadyMbps, toMbps, MAX_UPLOAD_CHUNK, MIN_UPLOAD_CHUNK,
 } from './measure';
 
 const DOWNLOAD_PATH = '/test-file/25MB.bin';
 const DOWNLOAD_STREAMS = 4;
 const UPLOAD_STREAMS = 3;
+/** A stream whose first upload is still open after 3 s has stalled (HTTP/3 on Jio). Later requests have no limit, so a brief dip can't trigger it; a stream under about 0.7 Mbps up does, harmlessly. */
+const UPLOAD_STALL_MS = 3000;
 // Multi-stream, fixed-duration phases (the M-Lab / Ookla approach).
 // The worker and Express rate limits are sized for this burst; raise them if you add streams.
 const MEASURE_DURATION_MS = 8000;
@@ -76,7 +78,7 @@ function startLoadedProbe(baseUrl: string, signal: AbortSignal): () => Promise<n
 async function runStreams(
     signal: AbortSignal,
     streams: number,
-    one: (signal: AbortSignal, credit: (bytes: number) => void) => Promise<void>,
+    one: (signal: AbortSignal, credit: (bytes: number) => void, stream: number) => Promise<void>,
     onLive: (mbps: number) => void,
 ): Promise<number> {
     const phase = new AbortController();
@@ -100,11 +102,11 @@ async function runStreams(
         }
     };
 
-    const loop = async () => {
+    const loop = async (stream: number) => {
         let failures = 0;
         while (!both.aborted) {
             try {
-                await one(both, credit);
+                await one(both, credit, stream);
                 failures = 0;
             } catch (e) {
                 if (both.aborted) break;
@@ -115,7 +117,7 @@ async function runStreams(
     };
 
     try {
-        await Promise.all(Array.from({ length: streams }, loop));
+        await Promise.all(Array.from({ length: streams }, (_, i) => loop(i)));
     } finally {
         clearTimeout(timer);
     }
@@ -199,19 +201,48 @@ export async function runTest(baseUrl: string, signal: AbortSignal, report: Repo
     report({ phase: 'download', downloadSpeed: results.downloadSpeed });
 
     report({ phase: 'upload', status: 'Testing upload' });
-    const payload = new Uint8Array(uploadChunkBytes(results.downloadSpeed, UPLOAD_STREAMS));
+    const payload = new Uint8Array(MAX_UPLOAD_CHUNK);
+    const upload = (base: string, stallMs?: number) => {
+        // Each stream starts small and resizes its body from its own last request (see nextUploadChunk).
+        const chunkOf: number[] = Array(UPLOAD_STREAMS).fill(MIN_UPLOAD_CHUNK);
+        const stalled = new AbortController();
+        const settled: boolean[] = Array(UPLOAD_STREAMS).fill(false);
+        return runStreams(AbortSignal.any([signal, stalled.signal]), UPLOAD_STREAMS, async (s, credit, stream) => {
+            const body = payload.subarray(0, chunkOf[stream]);
+            const t0 = performance.now();
+            try {
+                const res = await fetch(bust(`${base}/upload`, 'u'), {
+                    method: 'POST', cache: 'no-store',
+                    signal: stallMs && !settled[stream] ? AbortSignal.any([s, AbortSignal.timeout(stallMs)]) : s,
+                    headers: { 'Content-Type': 'application/octet-stream' }, body,
+                });
+                if (!res.ok) throw new HttpError(res.status);
+                await res.arrayBuffer();
+            } catch (e) {
+                if (stallMs && !s.aborted) stalled.abort();
+                throw e;
+            }
+            // fetch() has no upload progress, so bytes count when each body completes.
+            credit(body.byteLength);
+            settled[stream] = true;
+            chunkOf[stream] = nextUploadChunk(body.byteLength, performance.now() - t0);
+        }, mbps => report({ phase: 'upload', uploadSpeed: mbps }));
+    };
     stopProbe = startLoadedProbe(baseUrl, signal);
     try {
-        results.uploadSpeed = await runStreams(signal, UPLOAD_STREAMS, async (s, credit) => {
-            const res = await fetch(bust(`${baseUrl}/upload`, 'u'), {
-                method: 'POST', cache: 'no-store', signal: s,
-                headers: { 'Content-Type': 'application/octet-stream' }, body: payload,
-            });
-            if (!res.ok) throw new HttpError(res.status);
-            await res.arrayBuffer();
-            // fetch() has no upload progress, so bytes count when each body completes.
-            credit(payload.byteLength);
-        }, mbps => report({ phase: 'upload', uploadSpeed: mbps }));
+        // Chrome uploads over HTTP/2 read about half of a fast line, and over HTTP/3 they stall on some
+        // networks (Jio). The default server's uploads try its HTTP/3 address first; if any request there
+        // fails or a stream's first body takes over UPLOAD_STALL_MS, the phase starts again on the HTTP/2 address (#104).
+        if (baseUrl === WORKER_URL) {
+            try {
+                results.uploadSpeed = await upload(WORKER_H3_URL, UPLOAD_STALL_MS);
+            } catch (e) {
+                if (signal.aborted) throw e;
+                results.uploadSpeed = await upload(baseUrl);
+            }
+        } else {
+            results.uploadSpeed = await upload(baseUrl);
+        }
     } finally {
         results.loadedPingUp = await stopProbe();
     }

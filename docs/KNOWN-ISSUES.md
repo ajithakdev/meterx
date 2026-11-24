@@ -8,6 +8,7 @@ The 33 issues from the 2026-10-22 code scan were checked against `main` on 2026-
 
 | Issue | Severity | Summary |
 | --- | --- | --- |
+| #104 | Low | Chrome uploads over HTTP/2 read about half of a fast line. Fixed for the default server by uploading over HTTP/3 first (PR #105); still applies after a fallback and to custom servers |
 | #21 | Low | The background listens for a `run-test` shortcut, but the manifest declares no `commands` |
 
 ## Backends

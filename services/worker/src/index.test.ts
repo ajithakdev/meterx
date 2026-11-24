@@ -1,6 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import worker, { type Env } from './index';
 import { ALLOWED_SIZES_MB, MAX_UPLOAD_BYTES, VERSION } from '@meterx/shared';
+import { readFileSync } from 'node:fs';
 
 const EXT = 'chrome-extension://abcdefghijklmnop';
 const call = (path: string, init: RequestInit = {}, env: Env = {}) =>
@@ -52,11 +53,19 @@ describe('worker', () => {
 
     it('answers 429 when the rate limiter says no, but never for /health', async () => {
         const env: Env = { RATE_LIMITER: { limit: async () => ({ success: false }) } as unknown as RateLimit };
-        expect((await call('/ping', {}, env)).status).toBe(429);
+        expect((await call('/ip', {}, env)).status).toBe(429);
         expect((await call('/health', {}, env)).status).toBe(200);
     });
 
     it('404s unknown routes', async () => {
         expect((await call('/nope')).status).toBe(404);
+    });
+});
+
+describe('/ping static asset', () => {
+    it('answers Pong! with open CORS and timing headers', () => {
+        expect(readFileSync(new URL('../public/ping', import.meta.url), 'utf8')).toBe('Pong!');
+        const rules = readFileSync(new URL('../public/_headers', import.meta.url), 'utf8');
+        expect(rules).toMatch(/\n\/ping\n {2}Access-Control-Allow-Origin: \*\n {2}Timing-Allow-Origin: \*/);
     });
 });
