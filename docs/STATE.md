@@ -1,6 +1,10 @@
 # MeterX working state
 
-Last updated: 2026-11-21, on `feat/static-test-files` (PR #105).
+Last updated: 2026-11-25, on `main`.
+
+## Next release: 2027.1.0 on Sunday 2026-11-29
+
+Merged 2026-11-25 and not released: #105 (HTTP/3 uploads with HTTP/2 fallback, static `/ping`; the 3 s stall limit now applies only to each stream's first upload, covered by `runner.test.ts`), #102 (Ko-fi and UPI support links; #103 folded in, UPI QR regenerated and decoded), #101 (dev tools: ESLint 10, Vitest 5, esbuild 0.28, workers-types 5), plus #97 and #68. Release checks: load the built extension in a browser (esbuild bump), `wrangler deploy` then `curl -sI https://meterx-api.ajithakdev.com/ping` shows open CORS and timing headers, a real Jio test of the fallback. Chrome Web Store: the owner decided on 2026-11-25 to pay the one-time US$5 and register as Non-Trader (switch to Trader only when something is sold; trader name, address and phone go public on the listing). Submit 2027.1.0 there with the other stores. Google Play waits until an Android app exists.
 
 Update this file at the end of each work session. Keep it short. Delete entries once they are done and merged.
 
@@ -15,7 +19,7 @@ Backend before promotion (branch `feat/static-test-files`): the free Worker plan
 2027.0.1 is released and on every free store: Firefox live, Edge in review, Opera awaiting moderation (new entry, slug `meterx-by-ajithakdev-2`). Store steps and every field's text are in `docs/STORE-CHECKLIST.md` and `docs/STORE-LISTINGS.md`; `npm run package` builds `release/upload/<store>/`. Main has a `protect-main` ruleset, so merges need the owner's admin bypass. 2027.0.2 (2026-10-31) shipped PR #100: the worker's CPU per request is under the free plan's 10 ms limit (preview p50 4.5 ms, p90 8.0 ms), deployed as worker version `f924181d`; no extension change, so stores stay on 2027.0.1. An A/B test against the old worker showed the same speeds, but ping during download about 55 ms higher (weak signal, 10 of 13 pairs on a 480 ms link); recheck the bufferbloat grades on a low-latency line. MeterX has never been promoted; a launch plan (dev.to article, Reddit, AlternativeTo, awesome-selfhosted, the video, a rating prompt) was proposed on 2026-10-27 and not started.
 
 Next:
-1. Store reviews: Edge and Opera 2027.0.1 submitted 2026-10-27 (Firefox approved the same day). Delete the old never-published Opera entry (slug `meterx-by-ajithakdev`) if it still exists. Chrome Web Store needs a paid developer fee, so it waits for the owner's call.
+1. Store reviews: Edge and Opera 2027.0.1 submitted 2026-10-27 (Firefox approved the same day). Delete the old never-published Opera entry (slug `meterx-by-ajithakdev`) if it still exists. Chrome Web Store: approved 2026-11-25, see the release section above.
 2. Opera listing link into `apps/site/src/stores.ts` and the README once it is public.
 3. SEO one-time setup in `docs/SEO.md` (Search Console sitemap, Bing), portfolio entry.
 4. #97 (private-window history, detected with `windows.getCurrent`) and #68 (settings URL trailing slash) are fixed on `main` (2026-11-21) and ship in the next release. Still open for 2027.1.0: #99 Firefox for Android, #21 keyboard shortcuts (a feature). In the same release, add "appearance" to the settings list on the site privacy page (`apps/site/static/privacy/index.html`) and bump its date; the AMO copy already has it.
