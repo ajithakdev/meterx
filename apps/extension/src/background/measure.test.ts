@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { toMbps, bytesAtTime, steadyMbps, median, latencyStats, gradeBufferbloat, uploadChunkBytes, backoffMs } from './measure';
+import { toMbps, bytesAtTime, steadyMbps, median, latencyStats, gradeBufferbloat, nextUploadChunk, backoffMs } from './measure';
 
 const opts = { rampMs: 1000, tailMs: 500, durationMs: 8000 };
 
@@ -64,17 +64,18 @@ describe('gradeBufferbloat', () => {
     });
 });
 
-describe('uploadChunkBytes', () => {
-    it('uses small bodies on slow links so requests finish (#60)', () => {
-        expect(uploadChunkBytes(10, 3)).toBe(256 * 1024);
-        expect(uploadChunkBytes(undefined, 3)).toBe(256 * 1024);
+describe('nextUploadChunk', () => {
+    it('sizes the next body to take about 1 s', () => {
+        expect(nextUploadChunk(1_000_000, 250)).toBe(4_000_000);
+        expect(nextUploadChunk(2_000_000, 2000)).toBe(1_000_000);
     });
-    it('caps bodies on fast links', () => {
-        expect(uploadChunkBytes(5000, 3)).toBe(8 * 1024 * 1024);
+    it('grows at most 4x per request, so a slow uplink still completes bodies (#60)', () => {
+        expect(nextUploadChunk(300_000, 10)).toBe(1_200_000);
+        expect(nextUploadChunk(300_000, 0)).toBe(1_200_000);
     });
-    it('targets about 4 completions per second per stream', () => {
-        // 300 Mbps over 3 streams = 12.5 MB/s per stream, quarter of that per body.
-        expect(uploadChunkBytes(300, 3)).toBe(3_125_000);
+    it('stays within the min and max body sizes', () => {
+        expect(nextUploadChunk(256 * 1024, 5000)).toBe(256 * 1024);
+        expect(nextUploadChunk(8 * 1024 * 1024, 100)).toBe(8 * 1024 * 1024);
     });
 });
 

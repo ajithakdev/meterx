@@ -8,7 +8,7 @@ Every link for MeterX, what it is for, and how to run, package and release it. P
 - Code: https://github.com/ajithakdev/meterx (was `meterx-server`; GitHub redirects the old URL)
 - `npm run build`, `npm test`, `npm run lint` from the root; `npm run package` writes the store uploads to `release/`.
 - Releases are weekly on Sunday: tag, GitHub release, `wrangler deploy` for the worker, store uploads, site deploy.
-- Default test server: https://meterx-speedtest.meterx-ajithakdev.workers.dev
+- Default test server: https://meterx-api.ajithakdev.com
 
 ## Links and what each one is for
 
@@ -24,7 +24,8 @@ Every link for MeterX, what it is for, and how to run, package and release it. P
 | https://addons.mozilla.org/firefox/addon/meterx-by-ajithakdev/ | Firefox listing (add-on id `meterx@ajithakdev`), 2027.0.1 live since 2026-10-27 |
 | https://microsoftedge.microsoft.com/addons/detail/glkpolbkpachomgmmhdkmjnghejbhlfc | Microsoft Edge listing (2027.0.1 in review from 2026-10-27) |
 | Opera Add-ons | Not public yet: 2027.0.1 awaiting moderation (slug `meterx-by-ajithakdev-2`). Add the link to `apps/site/src/stores.ts` and the README once it's public |
-| https://meterx-speedtest.meterx-ajithakdev.workers.dev | Default test server (Cloudflare Worker) |
+| https://meterx-api.ajithakdev.com | Default test server (Cloudflare Worker), HTTP/2 only |
+| https://meterx-speedtest.meterx-ajithakdev.workers.dev | Same worker with HTTP/3: uploads go here first and fall back to meterx-api if a request fails or the first one stalls |
 | https://ko-fi.com/ajithakdev | Tips. Linked from the README, the site footer and the extension options page |
 
 ### Behind the scenes
