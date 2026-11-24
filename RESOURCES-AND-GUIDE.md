@@ -26,6 +26,7 @@ Every link for MeterX, what it is for, and how to run, package and release it. P
 | Opera Add-ons | Not public yet: 2027.0.1 awaiting moderation (slug `meterx-by-ajithakdev-2`). Add the link to `apps/site/src/stores.ts` and the README once it's public |
 | https://meterx-api.ajithakdev.com | Default test server (Cloudflare Worker), HTTP/2 only |
 | https://meterx-speedtest.meterx-ajithakdev.workers.dev | Same worker with HTTP/3: uploads go here first and fall back to meterx-api if a request fails or the first one stalls |
+| https://ko-fi.com/ajithakdev | Tips. Linked from the README, the site footer and the extension options page |
 
 ### Behind the scenes
 

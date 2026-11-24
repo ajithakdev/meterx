@@ -4,6 +4,9 @@ All notable changes to MeterX are documented here. The format follows [Keep a Ch
 
 ## [Unreleased]
 
+### Added
+- Support links: "Support on Ko-fi" in the site footer and the extension's options page (plain links, nothing new loads), and a Support section in the README with Ko-fi and a UPI QR code
+
 ### Changed
 - Upload streams resize each body from how long the last one took, aiming at about 1 s per request, so a test makes far fewer server requests and the free quota covers several times more tests
 
